@@ -1,10 +1,10 @@
 ---
 title: "Méthodes d'appariement"
+subtitle: "Atelier Mapme : Evaluation d'impact sur données spatiales"
 author: "Florent Bédécarrats"
-date: "Université d'Antananarivo, Octobre 2024"
+date: "Octobre 2024"
 format: 
-  revealjs:
-    theme: solarized
+  clean-revealjs:
     slide-number: true
     self-contained: true
 class: small-text
@@ -12,7 +12,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Principe des méthodes d'appariement {.smaller}
+## Principe des méthodes d'appariement 
 
 Est-ce que le statut d'Aire Protégée a un impact sur le couvert forestier ?
 
@@ -34,26 +34,25 @@ Le problème évident est qu'on n’observe pas simultanément les deux états :
 
 -   Comparer des zones différentes ?
 
-## Principe des méthodes d'appariement {.smaller}
+## Principe des méthodes d'appariement 
 
 :::: {.columns}
 
-::: {.column width="40%"}
+::: {.column}
+
+ Exemple sur une aire protégée :
 
 | Zone       | Couvert forestier |
 |------------|-------------------|
 | **Makira** | $$CF_M = M + AP$$ |
 | **Autre**  | $$CF_A = A$$      |
-:::
-
-::: {.column width="60%"}
 *Note :* $M$ représente l'effet fixe Makira et $A$ l'effet fixe de l'Autre.
+
 :::
 
-::::
+::: {.column}
 
-
-Effet causal:
+Effet causal :
 
 $$CF_M - CF_A = M + \underbrace{AP}_{effet} - A$$
 
@@ -62,6 +61,13 @@ $$ \Rightarrow M - A $$
 $M - A$ correspond aux différences de couvert forestier sans AP
 
 $\Rightarrow$ [biais]{style="color:red;"}
+
+:::
+
+::::
+
+
+
 
 ## Principe des méthodes d'appariement {}
 
@@ -79,7 +85,7 @@ On va chercher le "jumeau" grâce à des caractéristiques que l’on peut mesur
 - Il doit y avoir suffisamment d'unités traitées qui ressemblent à des unités contrôles  
   $\Rightarrow$ [Support commun]{style="color:red;"}
 
-## Hypothèse d'indépendance conditionnelle {.smaller}
+## Hypothèse d'indépendance conditionnelle 
 
 **L’hypothèse d’indépendance conditionnelle :**
 
@@ -89,7 +95,7 @@ $\Rightarrow$ Conditionnellement aux caractéristiques observables $X$, les rés
 
 $\Rightarrow$ L'indépendance conditionnelle permet de ne plus avoir de [problème de sélection]{style="color:red;"} i.e d'obtenir des [estimateurs sans biais]{style="color:red;"} de l'effet du traitement (conditionnel aux observables).
 
-## Hypothèse d'indépendance conditionnelle {.smaller}
+## Hypothèse d'indépendance conditionnelle 
 
 Assouplissement de l'hypothèse d'indépendance conditionnelle lorsque l'on s'intéresse à l'effet du traitement sur les unités traitées (ATT) :
 
@@ -101,7 +107,7 @@ $$
 
 $\Rightarrow$ Conditionnellement aux caractéristiques observables $X$, le résultat des unités non-traitées ($T = 0$) représente un [contrefactuel non biaisé]{style="color:red;"} du résultat potentiel moyen des unités pour lesquelles $T = 1$ en l’absence de traitement $T$.
 
-## Hypothèse d'indépendance conditionnelle {.smaller}
+## Hypothèse d'indépendance conditionnelle 
 
 Implication de l’hypothèse d’indépendance conditionnelle (CIA)
 
@@ -154,7 +160,7 @@ Plusieurs variantes dans la manière de construire le contrefactuel de chaque un
 Vérifier la typologie des approches : nearest neighbor basé sur PSM
 :::
 
-## Voisin le plus proche {.smaller}
+## Voisin le plus proche 
 
 **Voisin le plus proche**
 
@@ -169,7 +175,7 @@ Vérifier la typologie des approches : nearest neighbor basé sur PSM
 
 - Cette notion demande de définir une [métrique de la distance]{style="color:red;"} ou de la [ressemblance entre les unités]{style="color:blue;"}
 
-## Les métriques {.smaller}
+## Les métriques 
 
 Il y a plusieurs manières de calculer la distance entre deux unités :
 
@@ -179,7 +185,7 @@ Il y a plusieurs manières de calculer la distance entre deux unités :
 
 - **[Distance de Mahalanobis]{style="color:blue;"}** : accorde un poids différent aux caractéristiques observables $X$.
 
-## Variantes du plus proche voisin {.smaller}
+## Variantes du plus proche voisin 
 
 **Les plus proches voisins**
 
@@ -187,7 +193,7 @@ Il y a plusieurs manières de calculer la distance entre deux unités :
   - On apparie avec un nombre fixe $m$ de plus proches voisins et le résultat potentiel contrefactuel est donc la moyenne des résultats de ces $m$ voisins.
   - On exclut les couples trop éloignés i.e. on n’utilise pas les unités traitées pour lesquels on ne peut pas trouver un (ou $m$) jumeau.x à moins d’une certaine distance $d$ à fixer.
 
-## Mécanique de l'appariement {.smaller}
+## Mécanique de l'appariement 
 
 L’appariement peut être fait :
 
@@ -204,7 +210,7 @@ L’appariement peut être fait :
 - Un large échantillon de contrôle
 - L’estimation pourra être sensible à l’ordre dans lequel l’appariement est effectué
 
-## Limites du plus proche voisin {.smaller}
+## Limites du plus proche voisin 
 
 L’appariement est assez simple à mettre en œuvre, son principe est intuitif et ne demande pas de choix de paramètres.
 
@@ -217,7 +223,7 @@ Apparier avec un seul individu prive de l’information apportée par tous les a
 
 $\Rightarrow$ Par exemple, certains bénéficiaires peuvent avoir plusieurs jumeaux très proches : on peut considérer qu’il est dommage d’en choisir un seul (plus ou moins arbitrairement).
 
-## Choix de la taille de la fenêtre {.smaller}
+## Choix de la taille de la fenêtre 
 
 La fenêtre $d$ mesure la taille du voisinage en dehors duquel les poids sont très faibles.
 
@@ -227,7 +233,7 @@ Il n’existe pas vraiment de règle établie pour le choix de cette fenêtre.
 
 En pratique, le choix de la fenêtre est fait de manière _ad-hoc_.
 
-## Précision vs biais {.smaller}
+## Précision vs biais 
 
 Chaque méthode a des avantages et des inconvénients.
 
@@ -238,7 +244,7 @@ L’opposition entre la plus simple (voisin le plus proche) et la plus élaboré
 
 En pratique, on recommande de tester la sensibilité des résultats à la méthode utilisée.
 
-## Combien de variables de contrôle ? {.smaller}
+## Combien de variables de contrôle ? 
 
 Le matching exact est souvent compliqué à mettre en œuvre.
 
@@ -248,7 +254,7 @@ Pour que l’hypothèse CIA soit vérifiée, on souhaite utiliser le maximum d�
 
 $\Rightarrow$ L’appariement sur le score de propension (PSM) est pragmatique et désirable.
 
-## Appariement sur le score de propension {.smaller}
+## Appariement sur le score de propension 
 
 Si l’hypothèse CIA est vérifiée, alors les résultats potentiels sont indépendants de l’adhésion au traitement conditionnellement au score de propension (Rosenbaum et Rubin, 1983).
 
@@ -262,13 +268,13 @@ Cette propriété diminue le nombre de dimensions des comparaisons, puisque l’
 
 Cependant, le PSM n’est parfois non connu et il est donc nécessaire de l’estimer.
 
-## Estimation du score de propension {.smaller}
+## Estimation du score de propension 
 
 Pour tenir compte de la nature bornée du PSM, il est d’usage de le modéliser par une forme logistique (ou un probit) :
 
 Même s’il est coutume d’estimer le PSM par un modèle logit ou probit, il convient de se rappeler que la forme fonctionnelle du PSM est souvent inconnue.
 
-## Restriction au support commun {.smaller}
+## Restriction au support commun 
 
 Les méthodes présentées sous l’hypothèse d’indépendance conditionnelle reposent sur l’hypothèse d’un support commun.
 
@@ -278,7 +284,7 @@ Si ce n’est pas le cas, il sera impossible de trouver pour chaque unité trait
 
 $\Rightarrow$ Il est important de vérifier que le [support commun]{style="color:blue;"} i.e. la zone sur laquelle il existe des unités traitées et non traitées qui partagent le même score de propension, est suffisamment large.
 
-## Test visuel du support commun {.smaller}
+## Test visuel du support commun 
 
 On peut représenter le support commun à partir de la distribution des scores de propension des unités traitées et non-traitées.
 
@@ -378,7 +384,7 @@ ggplot(data, aes(x = propensity_score, fill = group, color = group)) +
 
 ```
 
-## Imposer un support commun {.smaller}
+## Imposer un support commun 
 
 ### Méthode du min/max
 
@@ -386,7 +392,7 @@ ggplot(data, aes(x = propensity_score, fill = group, color = group)) +
 
 - Pour estimer l’ATE, il faut également éliminer les unités traitées ayant un score supérieur au maximum observé pour les unités non traitées, c.à.d *"always treated"*
 
-## Quelles variables de conditionnement/contrôle ? {.smaller}
+## Quelles variables de conditionnement/contrôle ? 
 
 L’hypothèse d’indépendance conditionnelle demande d’observer les caractéristiques qui déterminent l’allocation du traitement.
 
