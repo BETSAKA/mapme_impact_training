@@ -1,0 +1,38 @@
+project:
+  type: book
+
+book:
+  site-url: https://betsaka.github.io/impact_training_mapme/
+  title: "mapme_impact_training"
+  author: "Firstname Lastname"
+  date: "9/22/2024"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+
+babelquarto:
+  languagelinks: sidebar
+  languagecodes:
+  - name: en
+    text: "Version in en"
+  - name: es
+    text: "Version in es"
+  - name: fr
+    text: "Version in fr"
+  mainlanguage: 'fr'
+  languages: ['en', 'es']
+title-en: title in en
+title-es: title in es
+description-en: description in en
+description-es: description in es
+author-en: author in en
+author-es: author in es
+lang: fr
