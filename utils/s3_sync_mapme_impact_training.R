@@ -33,7 +33,6 @@ my_files_s3 <- get_bucket_df(bucket = "fbedecarrats",
   pluck("Key")
 my_files_s3
 
-my_files_dest <- str_replace(my_files_local, "data", 
-                             "diffusion/mapme_impact_training")
+my_files_dest <- paste0("diffusion/mapme_impact_training/", my_files_local)
 
 map2(my_files_local, my_files_dest, put_to_s3)
