@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   site-url: https://betsaka.github.io/impact_training_mapme/
