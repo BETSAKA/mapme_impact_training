@@ -4,11 +4,12 @@ project:
 book:
   site-url: https://betsaka.github.io/impact_training_mapme/
   title: "mapme_impact_training"
-  author: "Firstname Lastname"
-  date: "9/22/2024"
+  author: "Florent Bédécarrats"
+  date: "10/07/2024"
   chapters:
     - index.qmd
     - intro.qmd
+    - bases_R.qmd
     - summary.qmd
     - references.qmd
 
