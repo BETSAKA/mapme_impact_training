@@ -1,0 +1,39 @@
+library(dplyr)
+library(stringr)
+library(aws.s3)
+library(purrr)
+
+# A function to put data from local machine to S3
+put_to_s3 <- function(from, to) {
+  aws.s3::put_object(
+    file = from,
+    object = to,
+    bucket = "fbedecarrats",
+    region = "",
+    multipart = TRUE)
+}
+
+# A function to iterate/vectorize copy
+save_from_s3 <- function(from, to) {
+  aws.s3::save_object(
+    object = from,
+    bucket = "fbedecarrats",
+    file = to,
+    overwrite = FALSE,
+    region = "")
+}
+
+
+my_files_local <- list.files("data", full.names = TRUE, recursive = TRUE)
+my_files_local
+# Listing files in bucket
+my_files_s3 <- get_bucket_df(bucket = "fbedecarrats",
+                             prefix = "diffusion/mapme_impact_training",
+                             region = "") %>%
+  pluck("Key")
+my_files_s3
+
+my_files_dest <- str_replace(my_files_local, "data", 
+                             "diffusion/mapme_impact_training")
+
+map2(my_files_local, my_files_dest, put_to_s3)
