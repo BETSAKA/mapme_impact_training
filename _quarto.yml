@@ -9,11 +9,12 @@ book:
   author: "Florent Bédécarrats"
   repo-url: https://github.com/BETSAKA/mapme_impact_training
   cover-image: figures/IRD_010664_ORI_small.png
-  cover-image-alt: Déforestation à Madagascar © IRD - Bernard Moizo
+  cover-image-alt: "Déforestation à Madagascar © IRD - Bernard Moizo"
   date: "10/07/2024"
   chapters:
     - index.qmd
-    - 01_introduction.qmd
+    - 01_programme.qmd
+    - 02_introduction.qmd
     - bases_R.qmd
     - references.qmd
 
