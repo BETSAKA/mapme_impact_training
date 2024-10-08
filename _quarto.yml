@@ -4,12 +4,16 @@ project:
 
 book:
   site-url: https://betsaka.github.io/impact_training_mapme/
-  title: "mapme_impact_training"
+  title: "Evaluation d'impact de politiques et projets spatialisés"
+  subtitle: "Théorie et pratiques sur les aires protégées malgache avec Mapme"
   author: "Florent Bédécarrats"
+  repo-url: https://github.com/BETSAKA/mapme_impact_training
+  cover-image: figures/IRD_010664_ORI_small.png
+  cover-image-alt: Déforestation à Madagascar © IRD - Bernard Moizo
   date: "10/07/2024"
   chapters:
     - index.qmd
-    - intro.qmd
+    - 01_introduction.qmd
     - bases_R.qmd
     - references.qmd
 
@@ -18,3 +22,8 @@ bibliography: references.bib
 format:
   html:
     theme: cosmo
+    code-fold: true
+
+execute:
+  warning: false
+  error: false

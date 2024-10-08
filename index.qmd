@@ -1,5 +1,24 @@
 # Preface {.unnumbered}
 
-This is a Quarto book.
+## Démarche
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+Ce contenu est un support de formation conçu pour initier à l'économétrie spatiale chercheurs, doctorants et étudiants s'orientant vers une thèse. Ce document a été élaboré avec les priorités suivantes :
+
+-   Compréhension des enjeux théoriques et méthodologiques soulevés par les évaluations d'impact ;
+-   Identification des spécificités et opportunités liées à l'évaluation d'interventions spatialisées ;
+-   Obtention de données spatiale permettant de démontrer et de quantifier l'impact ;
+-   Compréhension des différentes approches pour constituer un contrefactuel : randomisation, appariement, comparaison avant-après, différence de différences ;
+-   Familiarisation avec l'outil de traitement statistique R;
+-   Développement d'un regard critique sur la pertinence et la fiabilité des données mobilisées.
+
+D'autres aspects ont volontairement été placés au second plan, en particulier les subtilités associées aux modèles économétriques. Les méthodes économétriques mobilisées ici sont volontairement simples : pour être publiable dans une revue scientifique, un travail d'évaluation doit mobiliser des spécifications plus sophistiquées.
+
+## Contributions
+
+Cet ouvrage a bénéficié de nombreuses contributions :
+
+- Pour la première édition : Marc Bouvier, Kenneth Houngbedji, Jeanne de Montalembert et Marin Ferry ;
+- Pour la seconde édition : Lenaïg Moign et Clément Sambandahy ;
+- Pour la troisième édition : Ingrid Dallmann et Melvin Wong.
+
+Photo en couverture : "Déforestation à Madagascar" © IRD - Bernard Moizo

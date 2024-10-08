@@ -9,7 +9,7 @@
 <meta name="author" content="Florent Bédécarrats">
 <meta name="dcterms.date" content="2024-10-07">
 
-<title>mapme_impact_training</title>
+<title>Evaluation d’impact de politiques et projets spatialisés</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,7 +32,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./intro.html" rel="next">
+<link href="./01_introduction.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -97,7 +97,10 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">mapme_impact_training</a> 
+      <a href="./">Evaluation d’impact de politiques et projets spatialisés</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/BETSAKA/mapme_impact_training" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -115,7 +118,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+  <a href="./01_introduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
@@ -141,7 +144,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a></li>
+  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
+  <ul class="collapse">
+  <li><a href="#démarche" id="toc-démarche" class="nav-link" data-scroll-target="#démarche">Démarche</a></li>
+  <li><a href="#contributions" id="toc-contributions" class="nav-link" data-scroll-target="#contributions">Contributions</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -150,7 +157,8 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">mapme_impact_training</h1>
+<h1 class="title">Evaluation d’impact de politiques et projets spatialisés</h1>
+<p class="subtitle lead">Théorie et pratiques sur les aires protégées malgache avec Mapme</p>
 </div>
 
 
@@ -179,12 +187,34 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+
 <section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1>
-<p>This is a Quarto book.</p>
-<p>To learn more about Quarto books visit <a href="https://quarto.org/docs/books" class="uri">https://quarto.org/docs/books</a>.</p>
+<h1 class="unnumbered">Preface</h1><p><img src="figures/IRD_010664_ORI_small.png" title="Evaluation d'impact de politiques et projets spatialisés" class="quarto-cover-image img-fluid" alt="Déforestation à Madagascar © IRD - Bernard Moizo"></p>
+<section id="démarche" class="level2">
+<h2 class="anchored" data-anchor-id="démarche">Démarche</h2>
+<p>Ce contenu est un support de formation conçu pour initier à l’économétrie spatiale chercheurs, doctorants et étudiants s’orientant vers une thèse. Ce document a été élaboré avec les priorités suivantes :</p>
+<ul>
+<li>Compréhension des enjeux théoriques et méthodologiques soulevés par les évaluations d’impact ;</li>
+<li>Identification des spécificités et opportunités liées à l’évaluation d’interventions spatialisées ;</li>
+<li>Obtention de données spatiale permettant de démontrer et de quantifier l’impact ;</li>
+<li>Compréhension des différentes approches pour constituer un contrefactuel : randomisation, appariement, comparaison avant-après, différence de différences ;</li>
+<li>Familiarisation avec l’outil de traitement statistique R;</li>
+<li>Développement d’un regard critique sur la pertinence et la fiabilité des données mobilisées.</li>
+</ul>
+<p>D’autres aspects ont volontairement été placés au second plan, en particulier les subtilités associées aux modèles économétriques. Les méthodes économétriques mobilisées ici sont volontairement simples : pour être publiable dans une revue scientifique, un travail d’évaluation doit mobiliser des spécifications plus sophistiquées.</p>
+</section>
+<section id="contributions" class="level2">
+<h2 class="anchored" data-anchor-id="contributions">Contributions</h2>
+<p>Cet ouvrage a bénéficié de nombreuses contributions :</p>
+<ul>
+<li>Pour la première édition : Marc Bouvier, Kenneth Houngbedji, Jeanne de Montalembert et Marin Ferry ;</li>
+<li>Pour la seconde édition : Lenaïg Moign et Clément Sambandahy ;</li>
+<li>Pour la troisième édition : Ingrid Dallmann et Melvin Wong.</li>
+</ul>
+<p>Photo en couverture : “Déforestation à Madagascar” © IRD - Bernard Moizo</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -612,7 +642,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./intro.html" class="pagination-link" aria-label="Introduction">
+      <a href="./01_introduction.html" class="pagination-link" aria-label="Introduction">
         <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
