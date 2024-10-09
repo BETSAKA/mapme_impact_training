@@ -30,11 +30,9 @@ En somme, R est le langage de programmation sous-jacent pour l'analyse des donn�
 Il existe de plusieurs ressources en français pour apprendre à coder sur
 R. Nous vous recommandons en particulier :
 
--   [Introduction à R et au
-    Tidyverse](https://juba.github.io/tidyverse/index.html)
-    [@barnier2022]
--   [utilitR: documentation collaborative sur R de
-    l'INSEE](https://www.book.utilitr.org/index.html) [@utilitr:2022]
+-   [Introduction à R et au Tidyverse](https://juba.github.io/tidyverse/index.html) [@barnier2022]
+    [Guide-R: Guide pour l’analyse de données d’enquêtes avec R](https://larmarange.github.io/guide-R/) [@larmarange2024]
+-   [utilitR: documentation collaborative sur R de l'INSEE](https://www.book.utilitr.org/index.html) [@utilitr:2022]
 
 Les bonnes ressources anglophones gratuites sont très nombreuses et
 faciles à trouver sur Internet. Le grand classique est **R for data science**,
@@ -73,181 +71,260 @@ L'**environnement** rassemble des fonctionnalités pour suivre le fonctionnement
 
 L'**explorateur** permet de connaître les fichiers de notre ordinateur, de visualiser les rendus graphiques et cartographiqus, les différentes librairies et l'aide pour l'utilisation de ces dernières.
 
-## Les règles de codage
+## Introduction au langage R
 
-On se focalise ici sur quelques aspects qui peuvent être requis pour la manipulation du code et à la marge.
+R est un langage de programmation puissant et flexible, particulièrement adapté pour l'analyse de données et la statistique. Cette section couvre les bases du langage R, en fournissant une introduction aux concepts fondamentaux tels que les objets, les types de données, les fonctions, et les bonnes pratiques de codage. Ce guide est conçu pour vous aider à acquérir les bases nécessaires pour écrire du code efficace et lisible.
 
 ### La lisibilité du code
 
-Lorsqu'on saisit une commande, que ce soit dans la console ou dans la fenêtre de script, les espaces autour des opérateurs n'ont pas d'importance.
+La lisibilité du code est cruciale pour comprendre ce qu'un script fait, surtout après une certaine période ou lorsqu'on travaille en équipe.
 
-Les trois commandes suivantes sont donc équivalentes, mais on privilégie en général la deuxième pour des raisons de lisibilité du code.
+- **Espaces autour des opérateurs** : Utilisez des espaces autour des opérateurs pour améliorer la lisibilité.
 
 ```{r}
-# Ce qui suit un dièze n'est pas exécuté. On appelle ça un commentaire.
+# Mauvaise lisibilité
+total<-10+2
 
-# Les trois commandes seront comprises par le code
-10+2 
-10 + 2 
-10       +       2
-
+# Bonne lisibilité
+total <- 10 + 2
 ```
 
-Pour les opérations plus complexes, il faut veiller à utiliser les parenthèses, sinon les résultats ne seront pas corrects :
+- **Commentaires clairs** : En R, un commentaire commence par le symbole `#`. Tout ce qui est écrit après `#` sur la même ligne ne sera pas exécuté. Utilisez des commentaires pour expliquer des parties de code complexes ou des étapes importantes.
 
 ```{r}
-10 + 2 * 5 / 14 - 2 * 2 
-#>[1] 6.714286
+# Calcul du total des deux valeurs
+total <- 10 + 2  # Ajout de 10 et 2
+```
 
-(10 + (2*5)) / (14 - (2 * 2))  
+- **Utilisation des parenthèses** : Pour les expressions complexes, utilisez des parenthèses afin de rendre l'ordre des opérations explicite.
+
+```{r}
+# Utilisation des parenthèses pour clarifier l'ordre des opérations
+resultat <- (10 + 2) * (5 / 14) - (2 * 2)
+```
+
+#### Exercice
+
+- **Améliorer la lisibilité** : Reprenez le code suivant et améliorez sa lisibilité en ajoutant des espaces et des commentaires appropriés.
+
+```{r}
+resultat<-5*(3+2)-1
 ```
 
 ### L'assignation (création d'objets)
 
-Le signe `<-` correspond à l'assignation d'une valeur à une variable
-dont on choisit le nom.
+En R, on utilise `<-` pour assigner une valeur à un objet. Cette assignation permet de créer des variables et de les réutiliser plus tard. L'opérateur `<-` est spécifique à R, mais il est possible d'utiliser `=` dans certains cas. Cependant, `<-` est la convention généralement acceptée en R pour éviter toute ambiguïté.
 
-```{r ex calcs}
-#| code-fold: false
+- **Nommer les objets de manière explicite** : Choisissez des noms explicites pour les objets afin de comprendre leur rôle dans le code.
 
-# On commence par faire une opération simple
-3 + 4
-
-# Ce qui équivaut à :
-a <- 3
-b <- 4
-a + b
-
-# Et on peut également stocker le résultat dans une nouvelle variable
-c <- a + b
-c
+```{r}
+# Assignation d'une valeur
+moyenne_hauteur <- 170  # Hauteur moyenne en cm
 ```
 
-Du fait de l'assignation "\<-", **les valeurs sont automatiquement associées à l'objet** et ce dernier apparaît dans la fenêtre environnement.
-
-De manière générale, vous allez retrouver dans cette fenêtre tous les objets que vous avez créés après éxécution du code : que ce soit de simples variables, des tableaux, des fonctions, des objets graphiques, etc.
-
-Quand on assigne une nouvelle valeur à un objet déjà existant, la valeur précédente est perdue.
+- **Réassignation des valeurs** : Lorsque vous réassignez une valeur à un objet, la valeur précédente est perdue.
 
 ```{r}
 x <- 2
-x <- 5
-x
-#> [1] 5
+x <- 5  # La valeur de x est maintenant 5
 ```
 
-### Les différents types d'objets
-
-Les objets peuvent contenir tout un tas de données. Jusqu'ici on n'a
-stocké que des nombres, mais ils peuvent aussi contenir des chaînes de
-caractères (du texte), qu'on délimite avec des guillemets simples ou
-doubles (' ou ") :
-
--   La chaîne de caractères
+- **Suppression d'un objet** : Pour libérer la mémoire, vous pouvez supprimer un objet avec `rm()`.
 
 ```{r}
-chien <- "Chihuahua"
-chien
-#> [1] "Chihuahua"
+rm(x)  # Supprime l'objet x
 ```
 
-Ici la variable "chien" est un objet contenant une chaîne de caractères.
+#### Exercice
 
-Un point important est relatif aux types des variables : numérique,
-catégorielles, textes, dates, spatiales... En général, les opérations ne
-peuvent concerner que des variables du même type. Les fonctions sont
-souvent contraignantes quant aux types des variables qu'elles prennent
-comme arguments.
+- **Créer et réassigner des objets** : Créez un objet `age` et assignez-lui une valeur, puis modifiez cette valeur. Supprimez ensuite l'objet.
 
-```{r ex. variables}
-# Exemple avec une variable numérique et une variable caractère
-x <- 5
-y <- "hello"
+### Les différents types d'objets en R
 
-# Tentative d'addition de deux variables de types différents
-#resultat <- x + y
+R utilise différents types d'objets pour stocker des données, chacun ayant ses spécificités.
 
-```
-
--   Les vecteurs
-
-Les vecteurs permettent de stocker des informations de même nature dans
-un unique objet. Exemple :
+- **Chaînes de caractères** : Les chaînes de caractères sont délimitées par des guillemets.
 
 ```{r}
-# Si on continuait à créer des objets ponctuels :
-taille1 <- 156
-taille2 <- 164
-taille3 <- 197
-taille4 <- 147
-taille5 <- 173
-(taille1 + taille2 + taille3 + taille4 + taille5) / 5
-#> [1] 167.4
-
+nom <- "Alice"
+print(nom)  # Affiche "Alice"
 ```
 
-Précédemment, nous avons stockés différentes valeurs chiffrées sous
-plusieurs objets qui apparaissent dans notre fenêtre d'environnement.
+- **Vecteurs** : Les vecteurs sont des objets qui contiennent plusieurs valeurs de même type.
 
 ```{r}
+# Création d'un vecteur de tailles
 tailles <- c(156, 164, 197, 147, 173)
-#> [1] 156 164 197 147 173
+tailles_m <- tailles / 100  # Conversion en mètres
 ```
 
-Un vecteur dans R est un objet qui peut contenir plusieurs **informations du même type**, potentiellement en très grand nombre.
-
-Ici la variable "tailles"est un vecteur contenant des valeurs chiffrées.
-
-Ce qui est pratique avec les vecteurs, c'est qu'on peut alors leur appliquer des opérations qui s'appliqueront à l'ensemble des valeurs du vecteur.
+Les opérations peuvent être appliquées à l'ensemble des valeurs d'un vecteur.
 
 ```{r}
-# Si l'on souhaite mettre la taille en mètres : 
-
-tailles / 100 
-#> [1] 1.56 1.64 1.97 1.47 1.73
-
-tailles_m <- tailles / 100
-tailles_m
-#> [1] 1.56 1.64 1.97 1.47 1.73
+tailles_m + 0.1  # Ajoute 0,1 m à chaque valeur du vecteur
 ```
 
-Cela s'applique à tous les tyoes d'opérations.
+#### Exercice
 
-> Sans créer de nouvel objet, ajouter 10 cm aux tailles en centimètres et multiplier au carré les tailles en mètres
+- **Manipuler des vecteurs** : Créez un vecteur de 5 poids en kilogrammes. Convertissez-les en grammes.
+
+### Les tableaux de données (`data.frame`)
+
+Les `data.frame` sont des structures de données très courantes qui permettent de stocker des colonnes de types variés.
+
+- **Création d'un `data.frame`** : Combinez des vecteurs de même longueur pour créer un tableau de données.
 
 ```{r}
-tailles + 10
-#> [1] 166 174 207 157 183
-tailles_m^2
-#> [1] 2.4336 2.6896 3.8809 2.1609 2.9929
+noms <- c("Alice", "Bob", "Charlie")
+ages <- c(25, 30, 35)
+tableau <- data.frame(noms, ages)
+print(tableau)
 ```
 
-On peut également appliquer des opérations spécifiques à chaque valeur à l'aide d'un autre vecteur :
+- **Accéder aux colonnes** : Utilisez `$` pour accéder à une colonne spécifique d'un `data.frame`.
 
 ```{r}
-# Création d'un nouveau vecteur avec l'âge
-age <- c(52, 82, 19, 49, 29)
+tableau$ages  # Accède à la colonne 'ages'
 ```
 
-> En créant une nouvelle variable "age_tailles_m", calculer le ratio de l'age par rapport à la taille en mètres
+#### Exercice
 
-L'Indice de Masse Corporelle se calcule de la manière suivante: 
+- **Créer un `data.frame`** : Créez un `data.frame` avec des noms, des âges et des tailles, puis affichez uniquement la colonne des tailles.
 
-$$ IMC = poids (kg) / (taille (m))²$$
+### Les noms d'objets
 
-> En créant une nouvelle variable "imc", calculez le ratio pour les 5 valeurs
+Les noms des objets doivent être choisis avec soin pour qu'ils soient compréhensibles et explicites.
+
+- **Convention d'écriture** : Utilisez le `snake_case` pour nommer vos objets (par exemple, `moyenne_age`).
+- **Éviter les majuscules et caractères spéciaux** : Les majuscules peuvent prêter à confusion, car R est sensible à la casse.
 
 ```{r}
-tailles <- c(156, 164, 197, 147, 173)
-poids <- c(45, 59, 110, 44, 88)
+# Mauvaise pratique
+T1 <- 100
+
+# Bonne pratique
+temperature_moyenne <- 100
 ```
 
--   Les data.frame
+#### Exercice
 
-Un data.frame est un tableau qui peut contenir **différents types de données** (nombres, chaînes de caractères, etc.) organisées en colonnes.
+- **Nommer des objets** : Créez des objets pour représenter la température et la pression, en respectant les bonnes pratiques de nommage.
+
+### Les fonctions
+
+Les fonctions sont des ensembles d'instructions qui effectuent des tâches spécifiques. Elles permettent de réutiliser du code facilement.
+
+- **Créer une fonction** : Utilisez le mot-clé `function` pour créer une fonction.
 
 ```{r}
-#| code-fold: false
+# Fonction qui additionne deux nombres
+addition <- function(x, y) {
+  return(x + y)
+}
+
+resultat <- addition(3, 4)  # Appel de la fonction
+print(resultat)  # Affiche 7
+```
+
+- **Fonctions natives et packages** : De nombreuses fonctions sont intégrées à R, et d'autres sont disponibles via des packages additionnels.
+
+```{r}
+# Utilisation d'une fonction native
+somme <- sum(5, 10)
+print(somme)  # Affiche 15
+```
+
+#### Exercice
+
+- **Créer une fonction** : Créez une fonction qui calcule le carré d'un nombre et testez-la avec différentes valeurs.
+
+### Les structures de contrôle : `if`, `else`, et les boucles
+
+Les structures de contrôle permettent d'exécuter du code conditionnellement ou de manière répétitive.
+
+- **Conditions avec `if` et `else`** : Les instructions `if` et `else` sont utilisées pour exécuter du code en fonction de conditions.
+
+```{r}
+x <- 10
+if (x > 5) {
+  print("x est supérieur à 5")
+} else {
+  print("x est inférieur ou égal à 5")
+}
+```
+
+Dans cet exemple, le message "x est supérieur à 5" sera affiché car la condition `x > 5` est vraie.
+
+- **Boucles `for`** : Les boucles `for` permettent de répéter une série d'instructions un certain nombre de fois.
+
+```{r}
+for (i in 1:5) {
+  print(paste("Itération :", i))
+}
+```
+
+Ici, la boucle `for` va exécuter l'instruction `print()` pour chaque valeur de `i` allant de 1 à 5.
+
+#### Exercice
+
+- **Utiliser une boucle `for`** : Créez une boucle qui affiche les carrés des nombres de 1 à 10.
+
+### Les valeurs manquantes
+
+Les valeurs manquantes (`NA`) sont courantes dans les jeux de données réels. Il est essentiel de savoir comment les gérer pour éviter des erreurs.
+
+- **Gérer les valeurs manquantes** : Utilisez `na.rm = TRUE` pour ignorer les `NA` dans des opérations.
+
+```{r}
+ages <- c(20, 30, NA, 40)
+mean(ages) # Renvoie une valeur manquante 
+moyenne_ages <- mean(ages, na.rm = TRUE)
+```
+
+## Librairies R
+
+Les librairies R sont communément appelées "packages". Plusieurs packages R sont utilisés pour ce projet. Les packages dans R sont des extensions de logiciels qui ajoutent des fonctionnalités spécifiques au langage R de base.
+
+Ils sont conçus pour faciliter l'analyse de données, la visualisation, la modélisation statistique, et bien plus encore. Les packages sont comme des boîtes à outils virtuelles qui permettent aux utilisateurs d'effectuer des tâches analytiques avancées sans avoir à réinventer la roue à chaque fois. Ils permettent de gagner du temps et de se concentrer sur la résolution de problèmes spécifiques à son domaine d'étude, au lieu de vous soucier de la programmation de fonctions de base.
+
+Lors de la rédaction de publications scientifiques, il est important de citer correctement les packages R utilisés dans votre analyse. Assurez-vous d'inclure le nom complet du package ainsi que le nom de son auteur ou des auteurs. Zotero et RStudio permettent aisément d'inclure ces citations dans votre analyse.
+
+Les autres packages mobilisés pour ce cours sont listés dans le bloc de code ci-dessous :
+
+```{r librairies}
+library("tidyverse") # Une série de packages pour faciliter la manipulation de données
+library("readxl") # Pour lire les fichiers Excel (Carvalho et al. 2018)
+library("gt") # Pour des rendus graphiques harmonisés HTML et PDF/LaTeX
+library("wdpar") # Pour télécharger simplement la base d'aires protégées WDPA
+```
+
+### Le tidyverse
+
+Le "tidyverse" est un ensemble cohérent de packages R conçus pour la manipulation, la visualisation et l'analyse de données de manière cohérente et efficace. Il a été développé pour simplifier le flux de travail de l'analyse de données et pour rendre le code plus lisible et plus facile à comprendre.
+
+### L'opérateur pipeline
+
+Le signe `%>%` est un "tuyau". On peut le lire à haute voix comme "ensuite". Par exemple :
+
+```{r ex. pipe}
+library(tidyverse)
+
+a <- 4
+b <- 7
+c <- 3
+
+d <- a %>%
+  addition(b) %>%
+  addition(c)
+```
+
+### La préparation des données avec dplyr
+
+Le "tidyverse" comprend plusieurs packages populaires, notamment **dplyr**. Ce dernier est très utile pour épurer les données lorsque vous travaillez sur des tableaux (et donc sur des tables attributaires).
+
+Il est utilisé pour la manipulation de données, notamment le filtrage, la sélection, le regroupement et la création de nouvelles variables.
+
+```{r ex.tidyverse}
 # On commence par créer les variables (les colonnes du tableau)
 noms <- c("John", "Jack", "Cindy", "Samantha")
 sexe <- c("homme", "homme", "femme", "femme")
@@ -259,135 +336,15 @@ tailles <- c(174, 198, 192, 164)
 ma_table <- data.frame(noms, sexe, ages, poids, tailles)
 
 ma_table
-```
 
-### Les noms d'objets
 
-Les noms d'objets peuvent contenir des lettres, des chiffres, les symboles . et \_. Ils ne peuvent pas commencer par un chiffre.
-Attention, **R fait la différence entre minuscules et majuscules** dans les noms d'objets, ce qui signifie que x et X seront deux objets différents, tout comme resultat et Resultat.
-
-De manière générale, il est préférable d'éviter les majuscules (pour les risques d'erreur) et les caractères accentués (pour des questions d'encodage) dans les noms d'objets.
-
-De même, il faut essayer de trouver un équilibre entre clarté du nom (comprendre à quoi sert l'objet, ce qu'il contient) et sa longueur. Par exemple, on préfèrera comme nom d'objet taille_conj1 à taille_du_conjoint_numero_1 (trop long) ou à t1 (pas assez)
-
-### Les fonctions
-
-R est constitué de fonctions. De nombreuses fonctions prédéfinies sont contenues dans la base de R ou dans des packages qu'on ajoute (que l'on verra plus tard). La meilleure manière de comprendre ce qu'est une fonction est d'en créer une soi même.
-
-```{r ex fonction}
-#| code-fold: false
-# On crée une fonction "ajoute" qui prend deux paramètres. 
-# x est un premier et y est celui qu'on ajoute
-ajoute <- function(x, y) {
-  x + y
-}
-
-# On peut maintenant utiliser cette fonction
-ajoute(3, 4)
-
-# On peut effectuer les mêmes opérations. Les valeurs a et b sont encore 
-# en mémoire, donc on peut faire :
-ajoute(a, b)
-
-c <- ajoute(a, b)
-c
-
-ajoute(c, a)
-
-```
-
-Lorsque vous téléchargez un package (ou librairie), ce dernier charge en réalité un éventail de fonctions que vous pouvez explorer via l'aide.
-
-```{r}
-# la fonction sum() est une fonction de base de R, mais d'autres opérations plus complexes sous enregistrées dans des packages spécifiques
-sum(a,b)
-```
-
-> Exercice : rendre lisible le code ci-dessous
-
-```{r}
-x <- 5*(3+2)-1
-if(x%%2==0) {print('Pair')} else{print('Impair')}
-for(i in 1:10) {if(i%%2 == 0) {print(paste('Nombre pair :', i))} else{print(paste('Nombre impair :', i))}}
-
-```
-
-### Les valeurs manquantes
-
-Les valeurs manquantes sont fréquentes dans les jeux de données. Elles notées NA dans R (certaines peuvent avoir pour valeur NaN). On utilise la fonction na.rm= TRUE pour les éluder dans les opérations simples.
-
-```{r ex. NA}
-
-# On peut reprendre le jeu de données ma_table 
-# On peut faire une moyenne sur les tailles car on a toutes les variables
-mean(ma_table$tailles)
-sum(ma_table$tailles)
-
-# Mais la moyenne ne fonctionne pas immédiatement sur les poids ou les âges
-# car il manque des variables
-mean(ma_table$ages)
-sum(ma_table$poids)
-
-# Pour que cela fonctionne, il faut spécifier quoi faire des valeurs manquantes
-# en indiquant na.rm = TRUE (NA pour "non-available" et RM pour "remove")
-mean(ma_table$ages, na.rm = TRUE)
-sum(ma_table$poids, na.rm = TRUE)
-
-```
-
-## Librairies R 
-
-Les librairies R sont communément appelées "packages". Plusieurs packages R sont utilisées pour ce projet. Les packages dans R sont des extensions de logiciels qui ajoutent des fonctionnalités spécifiques au langage R de base.
-
-Ils sont conçus pour faciliter l'analyse de données, la visualisation, la modélisation statistique, et bien plus encore. Les packages sont comme des boîtes à outils virtuelles qui permettent aux utilisateurs d'effectuer des tâches analytiques avancées sans avoir à réinventer la roue à chaque fois. Ils permettent de gagner du temps et de se concentrer sur la résolution de problèmes spécifiques à son domaine d'étude, au lieu de vous soucier de la programmation de fonctions de base.
-
-Lors de la rédaction de publications scientifiques, il est important de citer correctement les packages R utilisés dans votre analyse.
-Assurez-vous d'inclure le nom complet du package ainsi que le nom de son auteur ou des auteurs. Zotero et RStudio permettent aisément d'inclure ces citations dans votre analyse.
- 
-Les autres packages mobilisés dans pour ce cours sont listés dans le bloc de code ci-dessous :
-
-```{r librairies}
-library("tidyverse") # Une série de packages pour faciliter la manipulation de données
-library("readxl") # Pour lire les fichiers excel (Carvalho et al. 2018)
-library("gt") # Pour des rendus graphiques harmonisés html et pdf/LaTeX
-library("wdpar") # Pour télécharger simplement la base d'aires protégées WDPA
-```
-
-### Le tidyverse
-
-Le "tidyverse" st un ensemble cohérent de packages R conçus pour la manipulation, la visualisation et l'analyse de données de manière cohérente et efficace. Il a été développé pour simplifier le flux de travail de l'analyse de données et pour rendre le code plus lisible et plus facile à comprendre.
-
-### L'opérateur pipeline
-
-Le signe `%>%` est un "tuyau". On peut le lire à haute voix comme "ensuite". Par exemple :
-
-```{r ex. pipe}
-#| code-fold: false
-library(tidyverse)
-
-d <- a %>%
-  ajoute(b) %>%
-  ajoute(c)
-
-```
-
-### La préparation des données avec dplyr
-
-Le "tidyverse" comprend plusieurs packages populaires, et notamment,**dplyr**. Ce dernier est très utile pour épurer les données lorsque vous travaillez sur des tableaux (et donc sur des tables attributaires).
-
-Il est utilisé pour la manipulation de données, notamment le filtrage,
-la sélection, le regroupement et la création de nouvelles variables.
-
-```{r ex.tidyverse}
-#| code-fold: false
 # Un exemple qui combine ces opérations
 ma_table %>%
-  filter(!is.na(ages)) 
-#consulter la sortie de l'objet
+  filter(!is.na(ages))
 
 ma_table %>%
   filter(!is.na(ages)) %>%
-  select(sexe, ages, tailles, poids) 
+  select(sexe, ages, tailles, poids)
 
 ma_table %>%
   filter(!is.na(ages)) %>%
@@ -403,50 +360,39 @@ ma_table %>%
             somme_poids = sum(poids, na.rm = TRUE),
             taille_max = max(tailles, na.rm = TRUE),
             age_moy = mean(ages, na.rm = TRUE))
-  
-# > A tibble : 2 x 5 
-#   sexe  nb_pers somme_poids taille_max age_moy
-#   <chr>   <int>       <dbl>      <dbl>   <dbl>
-# 1 femme       1           0        192    24  
-# 2 homme       2         160        198    49.5
- 
 ```
 
-Voici certaines de fonctions fondamentales du dplyr : - select : choisir des colonnes - filter : choisir des lignes - mutate : modifier des valeurs - group_by : variables pour des tris - summarise : créer des filtres
+Voici certaines des fonctions fondamentales de dplyr :
+- `select` : choisir des colonnes
+- `filter` : choisir des lignes
+- `mutate` : modifier des valeurs
+- `group_by` : regrouper les données par une ou plusieurs variables
+- `summarise` : créer des résumés sur les données
 
-> Exercice en groupe : à partir du tableau ventes_magasin, utiliser les fonctions précédentes et le pipe operator pour réaliser les opérations suivantes :
-
-1.  Sélectionnez uniquement les colonnes produit, quantite, et prix_unitaire du data frame ventes_magasin.
-
-2.  Ne conservez que les ventes où la quantité vendue est supérieure à 5  unités.
-
-3.  Ajoutez une nouvelle colonne nommée montant qui représente le
-    montant total de chaque vente (quantité multipliée par le prix
-    unitaire) et ajoutez-la au data frame.
-
-4.  Créez un nouveau tableau ventes_par_produit, regroupez les données
-    par produit pour calculer la quantité totale vendue de chaque
-    produit.
-
-5.  Complétez ce tableau avec le montant total et le nombre de ventes.
+> **Exercice en groupe** : à partir du tableau `ventes_magasin`, utilisez les fonctions précédentes et l'opérateur pipe pour réaliser les opérations suivantes :
+>
+> 1. Sélectionnez uniquement les colonnes `produit`, `quantite`, et `prix_unitaire` du data frame `ventes_magasin`.
+> 2. Ne conservez que les ventes où la quantité vendue est supérieure à 5 unités.
+> 3. Ajoutez une nouvelle colonne nommée `montant` qui représente le montant total de chaque vente (quantité multipliée par le prix unitaire) et ajoutez-la au data frame.
+> 4. Créez un nouveau tableau `ventes_par_produit`, regroupez les données par `produit` pour calculer la quantité totale vendue de chaque produit.
+> 5. Complétez ce tableau avec le montant total et le nombre de ventes.
 
 ```{r}
 # Création du data frame ventes_magasin
-
 ventes_magasin <- data.frame(
-  produit = c("Produit A", "Produit B", "Produit A", "Produit C", "Produit B", 
+  produit = c("Produit A", "Produit B", "Produit A", "Produit C", "Produit B",
               "Produit A", "Produit C", "Produit B", "Produit A"),
   quantite = c(8, 4, 12, 6, 7, 9, 3, 11, 5),
   prix_unitaire = c(10, 15, 8, 12, 20, 10, 18, 14, 9),
   date_vente = ymd( # Cette fonction interprète des dates year-month-day
-    c("2023-01-05", "2023-01-08", "2023-01-09", "2023-01-10", "2023-01-15", 
+    c("2023-01-05", "2023-01-08", "2023-01-09", "2023-01-10", "2023-01-15",
       "2023-01-20", "2023-01-25", "2023-01-30", "2023-02-02"))
   )
 ```
 
 ### Les jointures
 
-Jointures : fusionner deux tableaux par une variable d'identification ("clé")
+Les jointures permettent de fusionner deux tableaux par une variable d'identification ("clé").
 
 ```{r ex. jointure}
 # Tableau clients
@@ -459,84 +405,151 @@ commandes <- data.frame(ID = c(2, 3, 1, 4),
 
 # Jointure par ID
 resultat <- inner_join(clients, commandes, by = "ID")
-
 ```
 
 Cette opération exige toutefois que la **variable d'identification soit écrite de manière identique** dans les deux jeux de données.
 
-Supposons que l'on travaille sur les aires protégées à Madagascar et que l'on dispose de deux jeux de données provenant de sources différentes.
-On a alors des informations complémentaires que l'on souhaite fusionner en un seul tableau via le nom de l'aire protégée.
+Supposons que l'on travaille sur les aires protégées à Madagascar et que l'on dispose de deux jeux de données provenant de sources différentes. On a alors des informations complémentaires que l'on souhaite fusionner en un seul tableau via le nom de l'aire protégée.
 
-Il faudra veiller à ce que les noms aient la même écriture (pas de différences avec des majuscules, des abréviations ou des noms raccourcis)
+Il faudra veiller à ce que les noms aient la même écriture (pas de différences avec des majuscules, des abréviations ou des noms raccourcis).
 
 ## Import de données
 
-En très bref :
+Pour cette section, nous allons développer l'importation de différents types de fichiers couramment utilisés dans R pour la manipulation et l'analyse de données. R permet d'importer et de manipuler divers formats de fichiers, notamment CSV, Excel et fichiers texte.
 
-- Pour les fichiers excel ou csv, dans le volet "files" du panneau en     bas à droite de l'interface Rstudio, cliquer sur le fichier en question et utiliser l'assistant d'import. 
-- Pour les autres fichiers, se référer à l'aide ou chercher sur internet. Le cheat sheet"base R" présente les principales importations.
+### Utilisation du menu interactif de RStudio
 
-Concernant les données d'aires protégées importées :
+Avant de passer à l'importation via du code, il est recommandé de se familiariser avec le menu interactif de RStudio pour importer des fichiers.
 
--   Les études sur les aires protégées s'appuient fréquemment sur la base WDPA (World Database on Protected Area), consultable en ligne sur https://protectedplanet.net.
+- Pour importer un fichier, allez dans le panneau Files en bas à droite de l'interface RStudio.
+- Naviguez vers le fichier `data/AP_Vahatra.csv`, faites un clic droit et sélectionnez Import Dataset.
+- Un assistant d'import s'ouvrira, vous permettant de vérifier les données et de définir les options d'importation (séparateur, types de colonnes, etc.).
+- Une fois satisfait, cliquez sur Import et examinez le code automatiquement généré par RStudio. Ce code pourra être utilisé et modifié par la suite pour automatiser l'importation des données.
 
--   La base rassemblée par l'association Vahatra dans le cadre de la monographie qu'elle a coordonnée sur l'ensemble des aires protégées terrestres malgaches semble beaucoup plus fiable (Goodman et al. 2018). Les données en question sont disponibles sur le portail https://protectedareas.mg avec une licence creative commons (CC-BY).
+### Types de fichiers et comment les importer en ligne de code
 
-On va désormais importer les données avec l'information géographique :
+1. Fichiers CSV : Les fichiers CSV sont très populaires pour leur simplicité. Pour importer un fichier CSV, vous pouvez utiliser la fonction read.csv() ou read_csv() (package readr, partie du tidyverse).
 
-### Import et exploration des données Vahatra
+```{r import csv}
+library(readr)
+
+AP_Vahatra <- read_csv("data/AP_Vahatra.csv")
+```
+
+**2. Fichiers Excel** : Pour importer des fichiers Excel, on peut utiliser le package readxl. La fonction read_xlsx() permet d'importer un fichier au format .xlsx.
+
+```{r ex_excel, eval=FALSE}
+library(readxl)
+
+Mon_objet_R <- read_xlsx("data/mon_fichier.xlsx")
+```
+
+**3. Fichiers texte** : Les fichiers texte peuvent être importés avec read.table() ou read_delim() (pour des délimiteurs personnalisés).
+
+```{r ex_read_delim, eval = FALSE}
+AP_Vahatra <- read_delim("data/mon_fichier.txt", delim = "\t")
+```
+
+
+### Exercice pratique
+
+Pour vous familiariser avec ces différents formats, voici un petit exercice :
+
+1. Importez un fichier CSV présent dans le dossier `data`. Le fichier s'appelle `AP_Vahatra.csv`. Utilisez read_csv() pour l'importer dans un objet R.
+2. Importez un fichier Excel présent dans le dossier `data`. Le fichier s'appelle `AP_Vahatra.xlsx`. Utilisez read_xlsx() pour l'importer dans un objet R.
+3. Importez un fichier texte présent dans le dossier `data`. Le fichier s'appelle  `AP_Vahatra.txt`. Utilisez read_delim() pour l'importer dans un objet R.
+4. Affichez les premières lignes avec la fonction `head()` des jeux de données pour vérifier l'importation correcte.
+
+## Exploration des données importées
+
+Nous allons maintenant explorer le contenu d'`AP_Vahatra`.
+
+- Afficher les noms des colonnes :
+```{r}
+colnames(AP_Vahatra)
+```
+
+
+- Sélectionner les 10 premières aires protégées et leur catégorie IUCN :
 
 ```{r}
-# On travaille maintenant le fichier excel
-AP_Vahatra <- read_xlsx("data/AP_Vahatra.xlsx")
-
-# On fait apparaître le nom des colonnes 
-colnames(AP_Vahatra)
-
-# On fait apparaître le nom des différentes aires protégées et leur catégorie IUCN 
 AP_Vahatra %>%
   select(nom, cat_iucn) %>%
   filter(row_number() <= 10)
+```
 
-# On fait apparaître le nom des parcs nationaux 
-liste_PN <- AP_Vahatra %>%
-  filter(cat_iucn == "II") %>%
-  select(nom) 
 
-# Création d'une colonne pour la superficie en km² 
+- Explorer les dates de création et de modification :
+
+```{r}
+AP_Vahatra %>%
+  select(nom, date_creation, date_modification) %>%
+  filter(!is.na(date_creation)) %>%
+  arrange(date_creation)
+```
+
+- Calculer la superficie totale des aires protégées :
+
+```{r}
+AP_Vahatra %>%
+  summarise(superficie_totale = sum(hectares, na.rm = TRUE))
+```
+
+- Lister les aires protégées gérées par "Madagascar National Parks" :
+
+```{r}
+AP_Vahatra %>%
+  filter(gest_1 == "Madagascar National Parks") %>%
+  select(nom, gest_1)
+```
+
+- Obtenir des statistiques descriptives sur la superficie des aires protégées :
+
+```{r}
+AP_Vahatra %>%
+  summarise(superficie_moyenne = mean(hectares, na.rm = TRUE),
+            superficie_mediane = median(hectares, na.rm = TRUE),
+            superficie_max = max(hectares, na.rm = TRUE),
+            superficie_min = min(hectares, na.rm = TRUE))
+```
+
+
+### Exercice supplémentaire
+
+Pour cet exercice, utilisez les données AP_Vahatra que vous avez importées pour produire les statistiques suivantes :
+
+1. Filtrez les aires protégées dont la catégorie IUCN est "II" et affichez uniquement leurs noms.
+2. Ajoutez une colonne superficie_km2 à AP_Vahatra en convertissant la valeur hectares en kilomètres carrés.
+3. Triez les données par superficie_km2 de manière décroissante.
+4. Trouvez le nom des 3 plus grandes aires protégées 
+5. Calculez la superficie totale de toutes les aires protégées
+6. Produisez un résumé statistique (summary()) des valeurs de superficie_km2.
+7. Filtrez les aires protégées ayant une superficie supérieure ou égale au 3ème quartile et calculez leur nombre.
+
+
+
+## Production de tableaux avec R
+
+La fonction `gt()` permet d'obtenir des tableaux bien formatés, idéals pour présenter des résultats de manière claire et esthétique. Elle est particulièrement utile pour la création de rapports et la présentation de données tabulaires de manière attrayante. Voici quelques-unes des fonctions essentielles de `gt` :
+
+- **`cols_label()`** : Cette fonction permet de renommer les colonnes pour leur donner des titres plus explicites.
+- **`tab_header()`** : Elle permet d'ajouter un titre et un sous-titre au tableau, facilitant ainsi la compréhension de ce que le tableau représente.
+- **`fmt_number()`** : Cette fonction permet de formater les nombres, par exemple en définissant le nombre de décimales.
+- **`tab_source_note()`** : Elle permet d'ajouter une note de source au tableau, indiquant d'où proviennent les données.
+
+### Exemple d'utilisation de `gt`
+
+Voici un exemple d'utilisation de `gt` pour résumer les superficies des aires protégées par catégorie IUCN.
+
+```{r}
+# On va dabord convertir les superficies en hectares dans une nouvelle colonne
 AP_Vahatra <- AP_Vahatra %>%
   mutate(superficie_km2 = hectares * 0.01)
 
-# Tri des données de manière décroissante en fonction de la superficie en km²
-AP_Vahatra <- AP_Vahatra %>%
-  arrange(desc(superficie_km2))
 
-# Obtenir les 3 plus grandes aires protégées 
-AP_Vahatra %>% 
-  slice_head(n = 3) %>%
-  select(nom)
-
-# Obtenir la superficie totale de toutes les aires protégées 
-AP_Vahatra %>%
-  summarise(sum(AP_Vahatra$superficie_km2))
-
-# Résumé statistique des superficies en km² 
-summary(AP_Vahatra$superficie_km2)
-
-# Aires protégées de superficie supérieure ou égale au 3ème quartile
-AP_Vahatra %>%
-  filter(superficie_km2 >= 758.975) %>%
-  nrow()
-```
-
-> Exercice : quelles aires protégées ont été créées après 2000 et dont la gestion est assurée par l'Etat ?
-# Production d'un joli tableau synthétique
-
-La fonction gt() permet d'obtenir des tableaux bien formatés. Si vous vous intéressez aux catégories IUCN et à leur superficie totale sur l'ensemble des aires protégées :
-
-```{r}
-# Calcul des superficies totales pour chaque catégorie IUCN 
+# Calcul des superficies totales pour chaque catégorie IUCN
 AP_Vahatra_iucn <- AP_Vahatra %>%
+  mutate(superficie_km2 = hectares * 0.01) %>%
   filter(!is.na(cat_iucn)) %>%
   group_by(cat_iucn) %>%
   summarise(superficie_totale = sum(superficie_km2))
@@ -550,10 +563,11 @@ AP_Vahatra_iucn %>%
     title = "Aires protégées de Madagascar : superficies par catégorie IUCN") %>%
   tab_source_note("Source : données de l'association Vahatra") %>%
   fmt_number(decimals = 2)
-
 ```
 
-Avant de créer le graphique en nuages de points, nous devons préparer un tableau qui résume la superficie cumulée des aires protégées en fonction de leur année de création.
+### Superficie cumulée par année de création
+
+Avant de créer un graphique en nuages de points, nous devons préparer un tableau qui résume la superficie cumulée des aires protégées en fonction de leur année de création.
 
 ```{r}
 AP_superficie_annees <- AP_Vahatra %>%
@@ -563,248 +577,96 @@ AP_superficie_annees <- AP_Vahatra %>%
   mutate(superficie_cumulée = cumsum(superficie_annuelle))
 ```
 
-> Créer un tableau pour représenter cette donnée de manière élégante
+### Exercice : Créer un tableau synthétique
 
-### Production d'un joli graphique
+1. **Résumer la superficie cumulée par année de création** : Utilisez `gt()` pour présenter les résultats de `AP_superficie_annees` de manière claire et lisible.
 
-On cherche à décrire la dynamique de création d'aires protégées en
-termes de superficie. L'objectif est d'obtenir un graphique en nuages de
-points avec, pour chaque année de création, la superficie totale d'aires
-protégées.
+2. **Ajouter des colonnes d’explication** : Créez des colonnes qui expliquent chaque étape du processus (par exemple, année de création, superficie annuelle ajoutée, superficie cumulée).
 
-> Exercice de groupe : réfléchir à un tableau nommé
-> "AP_superficie_annees" qui se base sur le jeu de données AP_Vahatra et
-> qui pourrait alimenter le graphique en nuages de points. Utiliser la
-> fonction cumsum()
+3. **Ajouter un titre et une note de source** : Le tableau devrait inclure un titre explicite et une note de source, similaire à l’exemple précédent.
 
-Une fois le tableau AP_superficie_annees créé, vous pouvez éxecuter le
-code suivant :
+Ces étapes vous aideront à présenter les données de manière élégante et à faciliter la compréhension des tendances liées à la création des aires protégées.
+
+
+
+## Production de graphiques avec ggplot2
+
+Pour produire des graphiques de qualité avec R, nous utilisons souvent le package `ggplot2`. Ce package repose sur une approche appelée "la grammaire des graphiques". Cette grammaire est une façon systématique de construire des visualisations, en combinant différents composants graphiques, comme des axes, des légendes, des points, des lignes, etc. Elle offre une grande flexibilité et permet de créer des graphiques complexes de manière progressive.
+
+### Philosophie de la "grammaire des graphiques"
+
+La grammaire des graphiques est une méthode de pensée pour créer des visualisations. Elle repose sur l'idée que tout graphique peut être décomposé en une série de couches. Par exemple :
+
+1. **Données** : La première étape consiste à spécifier les données à utiliser pour le graphique.
+2. **Aesthetic mappings (Mappings esthétiques)** : Cela consiste à indiquer comment les variables des données seront représentées visuellement, par exemple, quel axe représente quelle variable, ou quelles couleurs représentent quelles catégories.
+3. **Geometries (Géométries)** : Chaque graphique est composé de formes géométriques, comme des points, des lignes, des barres, etc. Ces géométries déterminent la manière dont les données seront visualisées.
+4. **Facettes** : Cette étape permet de subdiviser le graphique en plusieurs sous-graphiques basés sur une variable, facilitant ainsi la comparaison entre catégories.
+5. **Statistiques** : Certaines visualisations nécessitent des transformations statistiques, comme l'ajout de moyennes, de tendances ou d'intervalles de confiance.
+6. **Coordonnées** : Il s'agit de définir les systèmes de coordonnées, tels que les axes cartésiens ou polaires.
+7. **Thème** : Enfin, le thème est utilisé pour définir l'apparence générale du graphique, par exemple, les couleurs de fond, la taille des polices, etc.
+
+En combinant ces différentes couches, `ggplot2` permet de construire des visualisations claires et personnalisées, adaptées aux besoins spécifiques de l'analyse.
+
+### Introduction à ggplot2
+
+Le package `ggplot2` suit cette logique en permettant d'ajouter chaque composant graphique avec le signe `+`. Voici une approche progressive pour comprendre `ggplot2` :
+
+1. **Importer le package et les données** :
 
 ```{r}
-# Graphique en nuages de points 
+library(ggplot2)
+# On suppose que AP_superficie_annees est déjà créé
+```
+
+2. **Créer la base du graphique** :
+
+La première étape consiste à spécifier les données et les mappings esthétiques. Par exemple, nous allons indiquer que l'axe des abscisses (`x`) représente l'année de création (`an_creation`) et l'axe des ordonnées (`y`) représente la superficie cumulée (`superficie_cumulée`).
+
+```{r}
+ggplot(data = AP_superficie_annees, aes(x = an_creation, y = superficie_cumulée))
+```
+
+3. **Ajouter des géométries** :
+
+Pour visualiser les données, nous ajoutons des points (`geom_point()`) et des lignes (`geom_line()`).
+
+```{r}
+ggplot(data = AP_superficie_annees, aes(x = an_creation, y = superficie_cumulée)) +
+  geom_point() +
+  geom_line()
+```
+
+4. **Ajouter des labels** :
+
+Pour rendre le graphique plus compréhensible, nous ajoutons des labels pour les axes et un titre.
+
+```{r}
 ggplot(data = AP_superficie_annees, aes(x = an_creation, y = superficie_cumulée)) +
   geom_point() +
   geom_line() +
-  labs(x = "Année", y = "Superficie cumulée (km²)") +
-  ggtitle("Superficie cumulée en fonction de l'année de création") +
+  labs(x = "Année", y = "Superficie cumulée (km²)",
+       title = "Superficie cumulée en fonction de l'année de création")
+```
+
+5. **Appliquer un thème** :
+
+Le thème permet de personnaliser l'apparence générale du graphique. Ici, nous utilisons `theme_minimal()` pour une apparence épurée.
+
+```{r}
+ggplot(data = AP_superficie_annees, aes(x = an_creation, y = superficie_cumulée)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Année", y = "Superficie cumulée (km²)",
+       title = "Superficie cumulée en fonction de l'année de création") +
   theme_minimal()
 ```
 
-### Import et exploration des données World Database on Protected Areas
+### Exercice : Créer un graphique avec ggplot2
 
-Avant de télécharger depuis le web les données du WDPA, nous pouvons
-directement travailler sur la table attributaire (fichier Excel)
+1. **Créer un graphique en nuages de points** : Utilisez `ggplot2` pour créer un graphique qui montre la superficie annuelle des aires protégées en fonction de leur année de création.
 
-```{r}
-library(wdpar)
-# On regarde si les données WDPA sont disponibles sur l'ordinateur qui exécute
-if (file.exists("data/WDPA_Oct2024_MDG-shapefile.zip")) {
-  # Si oui, on charge
-  WDPA_Mada <- wdpa_read("data/WDPA_Oct2024_MDG-shapefile.zip")
-} else {
-  # Si non, on télécharge depuis protectedplanet
-  WDPA_Mada <- wdpa_fetch("Madagascar",
-                      download_dir = "data")
-}
-```
+2. **Ajouter des lignes de tendance** : Ajoutez une ligne de tendance (`geom_smooth()`) pour montrer l'évolution générale de la superficie annuelle au fil du temps.
 
-> Exercice : comment auriez-vous comparer vos jeux de données Vahatra et WDPA_Mada ?
+3. **Facetter par catégorie IUCN** : Utilisez `facet_wrap()` pour créer des sous-graphiques qui montrent la superficie cumulée par année de création pour chaque catégorie IUCN.
 
-### Comparaison des données attributaires Vahatra et WDPA Madagascar
-
-On peut déjà comparer le nombre d'aires protégées.
-
-```{r}
-# Comparaison nombres d'aires protégées Vahatra et WDPA
-AP_Vahatra %>%
-  distinct(nom) %>%
-  nrow()
-
-WDPA_Mada %>%
-  distinct(NAME) %>%
-  nrow()
-```
-
-On peut comparer les différences de dates et de statut.
-
-```{r}
-# Tout d'abord, on ne garde que les aires de WDPA qui apparaissent dans Vahatra
-WDPA_commun <- WDPA_Mada %>%
-  filter(NAME %in% AP_Vahatra$nom_wdpa) %>%
-  filter(!(NAME == "Analalava" & IUCN_CAT == "Not Reported")) %>%
-  filter(!(NAME == "Site Bioculturel d'Antrema" & IUCN_CAT == "Not Reported")) %>%
-  filter(DESIG != "UNESCO-MAB Biosphere Reserve") %>%
-  arrange(NAME)  %>%
-  mutate(rownum = row_number())
-
-# On garde seulement les métadonnées que l'on veut comparer
-WDPA_a_comparer <- WDPA_commun %>% # On repart des AP communes
-  select(nom_wdpa = NAME, type_wdpa = INT_CRIT, cat_iucn_wdpa = IUCN_CAT,
-         year_wdpa = STATUS_YR) # On ne garde que les colonnes à comparer
-
-verif_meta_wdpa <-AP_Vahatra %>%
-  st_drop_geometry() %>% # Pas besoin d'un jeu spatial
-  select(nom:date_modification, nom_wdpa) %>% # colonnes à garder dans Vahatra
-  # On renomme la catégorie IUCN de Vahatra et on code les NA comme dans WDPA
-  mutate(cat_iucn = ifelse(is.na(cat_iucn), "Not Reported", cat_iucn)) %>%
-  left_join(WDPA_a_comparer, by = "nom_wdpa") %>% # On rassemble Vahatra et WDPA
-  # On compare les dates et statuts
-  mutate(`Différence de date` = year(date_creation) != year_wdpa,
-         `Différence de statut` = cat_iucn != cat_iucn_wdpa)
-
-verif_meta_wdpa %>%
-  summarise(`Nombre d'aires protégées comparées` = n(),
-            `Différence de date` = sum(`Différence de date`),
-            `Différence de statut` = sum(`Différence de statut`)) %>%
-  gt() %>%
-  tab_header(title = paste("Différences entre les données de WDPA et celles de",
-                     "l'assciation Vahatra sur les aires protégées terrestres",
-                     "à Madagascar"))
-```
-
-## Import des données géospatiales
-
-On va cette fois-ci importer les données avec l'information géographique
-:
-
--   Données Vahatra
-
-```{r}
-# On importe dans R en pointant vers le fichier .geojson
-AP_Vahatra <- st_read("data/AP_Vahatra.geojson") 
-```
-
--   Les limites communales :
-
-```{r}
-library(geodata)
-
-# On enregistre les limites communales 
-contour_mada <- gadm(country = "Madagascar", resolution = 1, level = 3,
-                     path = "data/GADM") %>%
-  st_as_sf()
-
-# On enregistre contour_mada pour s'en servir par la suite
-save(contour_mada, file = "data/contour_mada.rds")
-```
-
-### Le système de coordonnées de référence (SCR)
-
-Le **Système de Coordonnées de Référence** (SCR) est un élément
-fondamental lors du travail avec des données géospatiales.
-
-C'est un ensemble de conventions qui spécifie comment les coordonnées
-géodésiques (latitude, longitude, altitude) sont représentées et
-mesurées sur un plan cartographique (une carte, un système de
-coordonnées projetées).
-
-Les SCR sont basés sur un **système de référence géodésique**, mais ils
-introduisent des transformations et des projections pour représenter les
-coordonnées de manière plus pratique sur une surface plane. Un SCR est
-défini par la forme de l'ellipsoïde, l'origine du système de coordonnées
-et l'orientation de ses axes par rapport à l'ellipsoïde.
-
-Par exemple, pour le système de référence WGS84, l'origine du WGS 84
-(World Geodetic System 1984) est située à l'intersection de l'équateur
-(latitude 0 degrés) et du méridien de Greenwich (longitude 0 degrés)
-
-![](figs/vector_lonlat_1.png)
-
-De nombreux pays et organisations ont leurs propres systèmes de
-référence géodésique, (ci-dessous un exemple) mais il existe également
-des systèmes de référence géodésique mondiaux, tels que le WGS 84 (World
-Geodetic System 1984), qui servent de norme internationale pour la
-cartographie et la géolocalisation.
-
-Il faut veiller à ce que nos **systèmes de coordonnées de références**.
-La fonction st_crs() fait partie du package sf()et permet de vérifier ce
-dernier.
-
-```{r}
-# On fait un point sur nos trois jeux de données 
-st_crs(contour_mada) # WGS 84, EPSG:4326
-st_crs(WDPA_Mada) # WGS 84, EPSG:4326 
-st_crs(AP_Vahatra) # WGS 84, EPSG:4326 
-```
-
-### Les différents types de géométries
-
-```{r}
-# | tbl-cap: "Caractéristiques spatiales des données d'aires protégées WDPA du Sénégal"
-
-# On crée une colonne pour connaître la géométrie de chaque observation (mutate) 
-# On trie les données en fonction de leur géométrie (group_by) 
-# On résume l'effectif total pour chaque catégorie de géométrie (summarise). 
-
-WDPA_Mada %>%
-  mutate(geom_type = st_geometry_type(.)) %>%  
-  group_by(geom_type) %>%  
-  summarise(n = n())  %>%
-  st_drop_geometry() %>%
-  gt() 
-
-```
-
-### Production d'une carte interactive
-
-```{r}
-library(tmap)
-# On fait une carte pour visualiser la donnée géographique
-
-tmap_mode("view") # En mode interactif
-tm_shape(contour_mada) +
-  tm_borders() +
-  tm_shape(AP_Vahatra) + 
-  tm_polygons(col = "cat_iucn", alpha = 0.6, title = "Catégorie IUCN",
-              id = "nom",
-              popup.vars = c("Acte de création" = "creation",
-                             "Année de création" = "an_creation",
-                             "Surface (ha)" = "hectares",
-                             "Nom" = "nom",
-                             "Gestionnaire" = "gest_1")) +
-  tmap_options(check.and.fix = TRUE)
-
-```
-
-> Exercice : faire une carte avec les données WDPA
-
-### Visualiser les différences entre les données Vahatra et WDPA
-
-```{r}
-WDPA_exclu <- WDPA_Mada %>%
-  filter(!(NAME %in% AP_Vahatra$nom_wdpa))
-
-tmap_mode("view")
-WDPA_exclu %>%
-  tm_shape() +
-  tm_polygons(col = "IUCN_CAT")
-```
-
-### Les différents traitements géospatiaux
-
-Le package sf() permet une multitude d'opérations géospatiales entre
-deux catégories de données que l'on peut retrouver dans le cheat-sheep.
-
-![](figures/overlay_operations.png)
-
-Voici quelques exemples utiles qui font appel à ces fonctions.
-
-```{r}
-# Garder un seul type de géométrie dans le jeu de données 
-# Ici, on ne garde que les polygones (sans les points)
-WDPA_Mada_poly <- WDPA_Mada %>% 
-  filter(st_geometry_type(.) == "MULTIPOLYGON")
-
-# Couper ma couche avec les limites des communes 
-# On ne garde donc que les parties terrestres
-WDPA_Mada_poly_terrestre <- WDPA_Mada_poly %>%
-  st_intersection(contour_mada)
-
-# Calculer le total des surfaces de chaque aire
-surface_cumul <- WDPA_Mada_poly_terrestre %>%
-  mutate(surface = st_area(.)) %>% #le pçint fait référence à la géométrie de chaque objet spatial 
-  st_drop_geometry() %>% 
-  summarise(surface = sum(surface, na.rm = TRUE)) %>%
-  mutate(`Type de cumul` = "Somme des surfaces terrestres de chaque aire protégée",
-         .before = everything())
-```
+Ces étapes vous permettront de comprendre progressivement comment construire des graphiques en utilisant la grammaire des graphiques, et d'explorer différentes façons de visualiser vos données.

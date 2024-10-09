@@ -3,6 +3,14 @@ library(stringr)
 library(aws.s3)
 library(purrr)
 
+# 
+# aws.s3::put_object(
+#   file = "data/AP_Vahatra.txt",
+#   object = "diffusion/mapme_impact_training/data/AP_Vahatra.txt",
+#   bucket = "fbedecarrats",
+#   region = "",
+#   multipart = TRUE)
+
 # A function to put data from local machine to S3
 put_to_s3 <- function(from, to) {
   aws.s3::put_object(

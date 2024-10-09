@@ -24,7 +24,154 @@ Ce diaporama propose un éclarage sur le mdode de production données relatives 
 
 ![Cliquer ici pour télécharger la présentationz](presentations/TVM2022_PresentationDesDonnees.pdf)
 
-#€ Exercices pratiques à partir de R et mapme.biodiversity
+## Import des données géospatiales
+
+On va cette fois-ci importer les données avec l'information géographique
+:
+
+-   Données Vahatra
+
+```{r}
+# On importe dans R en pointant vers le fichier .geojson
+AP_Vahatra <- st_read("data/AP_Vahatra.geojson") 
+```
+
+-   Les limites communales :
+
+```{r}
+library(geodata)
+
+# On enregistre les limites communales 
+contour_mada <- gadm(country = "Madagascar", resolution = 1, level = 3,
+                     path = "data/GADM") %>%
+  st_as_sf()
+
+# On enregistre contour_mada pour s'en servir par la suite
+save(contour_mada, file = "data/contour_mada.rds")
+```
+
+### Le système de coordonnées de référence (SCR)
+
+Le **Système de Coordonnées de Référence** (SCR) est un élément
+fondamental lors du travail avec des données géospatiales.
+
+C'est un ensemble de conventions qui spécifie comment les coordonnées
+géodésiques (latitude, longitude, altitude) sont représentées et
+mesurées sur un plan cartographique (une carte, un système de
+coordonnées projetées).
+
+Les SCR sont basés sur un **système de référence géodésique**, mais ils
+introduisent des transformations et des projections pour représenter les
+coordonnées de manière plus pratique sur une surface plane. Un SCR est
+défini par la forme de l'ellipsoïde, l'origine du système de coordonnées
+et l'orientation de ses axes par rapport à l'ellipsoïde.
+
+Par exemple, pour le système de référence WGS84, l'origine du WGS 84
+(World Geodetic System 1984) est située à l'intersection de l'équateur
+(latitude 0 degrés) et du méridien de Greenwich (longitude 0 degrés)
+
+![](figs/vector_lonlat_1.png)
+
+De nombreux pays et organisations ont leurs propres systèmes de
+référence géodésique, (ci-dessous un exemple) mais il existe également
+des systèmes de référence géodésique mondiaux, tels que le WGS 84 (World
+Geodetic System 1984), qui servent de norme internationale pour la
+cartographie et la géolocalisation.
+
+Il faut veiller à ce que nos **systèmes de coordonnées de références**.
+La fonction st_crs() fait partie du package sf()et permet de vérifier ce
+dernier.
+
+```{r}
+# On fait un point sur nos trois jeux de données 
+st_crs(contour_mada) # WGS 84, EPSG:4326
+st_crs(WDPA_Mada) # WGS 84, EPSG:4326 
+st_crs(AP_Vahatra) # WGS 84, EPSG:4326 
+```
+
+### Les différents types de géométries
+
+```{r}
+# | tbl-cap: "Caractéristiques spatiales des données d'aires protégées WDPA du Sénégal"
+
+# On crée une colonne pour connaître la géométrie de chaque observation (mutate) 
+# On trie les données en fonction de leur géométrie (group_by) 
+# On résume l'effectif total pour chaque catégorie de géométrie (summarise). 
+
+WDPA_Mada %>%
+  mutate(geom_type = st_geometry_type(.)) %>%  
+  group_by(geom_type) %>%  
+  summarise(n = n())  %>%
+  st_drop_geometry() %>%
+  gt() 
+
+```
+
+### Production d'une carte interactive
+
+```{r}
+library(tmap)
+# On fait une carte pour visualiser la donnée géographique
+
+tmap_mode("view") # En mode interactif
+tm_shape(contour_mada) +
+  tm_borders() +
+  tm_shape(AP_Vahatra) + 
+  tm_polygons(col = "cat_iucn", alpha = 0.6, title = "Catégorie IUCN",
+              id = "nom",
+              popup.vars = c("Acte de création" = "creation",
+                             "Année de création" = "an_creation",
+                             "Surface (ha)" = "hectares",
+                             "Nom" = "nom",
+                             "Gestionnaire" = "gest_1")) +
+  tmap_options(check.and.fix = TRUE)
+
+```
+
+> Exercice : faire une carte avec les données WDPA
+
+### Visualiser les différences entre les données Vahatra et WDPA
+
+```{r}
+WDPA_exclu <- WDPA_Mada %>%
+  filter(!(NAME %in% AP_Vahatra$nom_wdpa))
+
+tmap_mode("view")
+WDPA_exclu %>%
+  tm_shape() +
+  tm_polygons(col = "IUCN_CAT")
+```
+
+### Les différents traitements géospatiaux
+
+Le package sf() permet une multitude d'opérations géospatiales entre
+deux catégories de données que l'on peut retrouver dans le cheat-sheep.
+
+![](figures/overlay_operations.png)
+
+Voici quelques exemples utiles qui font appel à ces fonctions.
+
+```{r}
+# Garder un seul type de géométrie dans le jeu de données 
+# Ici, on ne garde que les polygones (sans les points)
+WDPA_Mada_poly <- WDPA_Mada %>% 
+  filter(st_geometry_type(.) == "MULTIPOLYGON")
+
+# Couper ma couche avec les limites des communes 
+# On ne garde donc que les parties terrestres
+WDPA_Mada_poly_terrestre <- WDPA_Mada_poly %>%
+  st_intersection(contour_mada)
+
+# Calculer le total des surfaces de chaque aire
+surface_cumul <- WDPA_Mada_poly_terrestre %>%
+  mutate(surface = st_area(.)) %>% #le pçint fait référence à la géométrie de chaque objet spatial 
+  st_drop_geometry() %>% 
+  summarise(surface = sum(surface, na.rm = TRUE)) %>%
+  mutate(`Type de cumul` = "Somme des surfaces terrestres de chaque aire protégée",
+         .before = everything())
+```
+
+# Exercices pratiques à partir de R et mapme.biodiversity
 
 On va ici mobiliser une série de packages pour la manipulation des données tabulaires et spatiale, pour leur restitution graphique, mais surtout oour l'acquisition et le traitement de données spatiales.
 
@@ -94,7 +241,6 @@ Le package "mapme.biodiversity" facilite l'analyse de données statistiques sur 
 ```{mermaid diagram_mapme}
 #| fig-cap: "Processus de traitement avec mapme.biodiversity"
 
-mermaid("
 graph TB
     AA(Définition des polygones d'analyse)
     A(Initialisation du portefeuille)
@@ -107,7 +253,6 @@ graph TB
     B-->C
     C-->D
     C-->E
-")
 ```
 
 La liste des ressources disponibles et des indicateurs peut être consultée [en ligne dans la documentation du package mapme.biodiversity](https://mapme-initiative.github.io/), ou dans R, via l'aide ou encore avec les fonctionns suivantes :
