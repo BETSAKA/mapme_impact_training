@@ -2,7 +2,7 @@
 
 Voici une proposition de programme sur sept jours, visant une progression pédagogique pour commencer par les fondaments conceptuels et techniques et approfondir progressivement jusqu'à une maîtrise des bases de l'évaluation d'impact sur données spatiales. A La formation combine des cours théoriques et des exercices pratiques, incluant l'utilisation de logiciels tels que R. 
 
-### JOUR 1 : L’évaluation d’impact : Pourquoi ? Comment ?
+## JOUR 1 : L’évaluation d’impact : Pourquoi ? Comment ?
 
 -   **8h - 9h30** : Présentation de l’atelier *(60 minutes)*
 
@@ -54,7 +54,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
     -   Début des travaux pratiques (pas finis en séance)
     -   Débrieffing pour s'assurer que la méthode est bien comprise\
 
-### JOUR 2 : Initiation à R
+## JOUR 2 : Initiation à R
 
 -   **8h - 8h30** : Environnement technique *(30 minutes)*
 
@@ -73,7 +73,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 -   **15h30 - 17h** : Import de données, valeurs manquantes *(90 minutes)*
 
 
-### JOUR 3 : Initiation à R et restitution des lectures d'articles
+## JOUR 3 : Initiation à R et restitution des lectures d'articles
 
 -   **8h - 9h30** : Manipulations de données avec tidyverse *(90 minutes)*
 
@@ -95,7 +95,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
 -   **15h30 - 17h** : Restitution des lectures d'articles *(90 minutes)*
 
-### JOUR 4 : Données spatiales et mapme.biodiversity
+## JOUR 4 : Données spatiales et mapme.biodiversity
 
 -   **8h - 8h30** : Présentation des données spatiales *(30 minutes)*
 
@@ -136,7 +136,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
     -   Création d'une grille sur le territoire
     -   Exemple bref d'acquisition des données et calcul sur la grille
 
-### JOUR 5 : Méthodes expérimentales et observationnelles avant/après
+## JOUR 5 : Méthodes expérimentales et observationnelles avant/après
 
 -   **8h - 9h30** : Randomisation *(45 minutes)*
 
@@ -167,7 +167,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
 -   **15h30 - 17h** : Tests de comparaison et d'équilibre avant-après et avec-sans *(90 minutes)*
 
-### JOUR 6 : Méthodes observationnelles d'appariement (matching)
+## JOUR 6 : Méthodes observationnelles d'appariement (matching)
 
 -   **8h - 9h30** : Différentes unités/échelles d'analyse (AP, cellules, pixels...) *(30 minutes)*
 
@@ -204,7 +204,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
     -   Tests d'équilibre
 
-### JOUR 7 : Double différence et conclusion
+## JOUR 7 : Double différence et conclusion
 
 -   **8h - 9h30** : Double différence (DiD) *(60 minutes)*
 

@@ -2,6 +2,9 @@
 output: html_document
 editor_options: 
   chunk_output_type: console
+format:
+  html:
+    code-fold: false
 ---
 
 # Fondamentaux pour l'utilisation de R {#sec-fondamentaux}
@@ -55,7 +58,7 @@ Il existe également de superbes cheat-sheet ("antisèches") qui récapitulent l
 
 ### Interface Rstudio
 
-![](figures/R_interface_colored.png)
+![](figs/R_interface_colored.png)
 
 A : fenêtre script/source B : console C : environnement D : explorateur
 
@@ -705,7 +708,7 @@ Par exemple, pour le système de référence WGS84, l'origine du WGS 84
 (World Geodetic System 1984) est située à l'intersection de l'équateur
 (latitude 0 degrés) et du méridien de Greenwich (longitude 0 degrés)
 
-![](figures/vector_lonlat_1.png)
+![](figs/vector_lonlat_1.png)
 
 De nombreux pays et organisations ont leurs propres systèmes de
 référence géodésique, (ci-dessous un exemple) mais il existe également

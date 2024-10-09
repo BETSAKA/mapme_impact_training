@@ -1,5 +1,12 @@
 # Introduction
 
-This is a book created from markdown and executable code.
+## Cadrage général pour les méthodes d'évaluation
 
-See @knuth84 for additional discussion of literate programming.
+```{=html}
+<iframe src="/slides/fr/Intro_generale.pdf" width="100%" height="400px"></iframe>
+```
+
+[Cliquer ici pour télécharger la présentation](/slides/fr/Intro_generale.pdf)
+
+
+## Revue des articles
