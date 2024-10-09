@@ -208,5 +208,105 @@
     "crumbs": [
       "References"
     ]
+  },
+  {
+    "objectID": "01_introduction.html",
+    "href": "01_introduction.html",
+    "title": "1  Introduction",
+    "section": "",
+    "text": "1.1 Cadrage général pour les méthodes d’évaluation\nCliquer ici pour télécharger la présentation\nMentionner également les enjeux de prise en compte du qualitatif.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01_introduction.html#revue-des-articles",
+    "href": "01_introduction.html#revue-des-articles",
+    "title": "1  Introduction",
+    "section": "1.2 Revue des articles",
+    "text": "1.2 Revue des articles\nOn va revoir deux articles récents qui emploient des méthodes semblables à celles que nous allons étudier pendant le cours :\n\nL’article “On track to achieve no net loss of forest at Madagascar’s biggest mine” de Devenish et al. (2022) paru dans Nature Sustainability.\nL’article “Forest loss report card for the world’s protected areas”, de Wolf et al. (2021), paru dans Nature Ecology & Evolution.\n\n\n\n\n\nDevenish, Katie, Sébastien Desbureaux, Simon Willcock, and Julia P. G. Jones. 2022. “On Track to Achieve No Net Loss of Forest at Madagascar’s Biggest Mine.” Nature Sustainability 5 (6): 498–508. https://doi.org/10.1038/s41893-022-00850-7.\n\n\nWolf, Christopher, Taal Levi, William J. Ripple, Diego A. Zárrate-Charry, and Matthew G. Betts. 2021. “A Forest Loss Report Card for the World’s Protected Areas.” Nature Ecology & Evolution 5 (4): 520–29. https://doi.org/10.1038/s41559-021-01389-0.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "00_programme.html",
+    "href": "00_programme.html",
+    "title": "Programme",
+    "section": "",
+    "text": "JOUR 1 : L’évaluation d’impact : Pourquoi ? Comment ?",
+    "crumbs": [
+      "Programme"
+    ]
+  },
+  {
+    "objectID": "00_programme.html#jour-1-lévaluation-dimpact-pourquoi-comment",
+    "href": "00_programme.html#jour-1-lévaluation-dimpact-pourquoi-comment",
+    "title": "Programme",
+    "section": "",
+    "text": "8h - 9h30 : Présentation de l’atelier (60 minutes)\n\nObjectif, contenu, programme\nMéthode, exercices et constitution des groupes\nFormateurs et stagiaires (expérience R…)\n\nDiscussion/questions (30 minutes)\n\nLien entre la formation et les agendas des participants\nIntérêt de la dimension spatiale\nFil rouge pour expliquer les méthodes d’analyses : l’impact des aires protégées sur la déforestation\n\n\n9h30 - 10h : Pause\n10h - 12h : Définition des objectifs de l’évaluation (90 minutes)\n\nSuivi, évaluations classiques et d’impact : liens et différences\nCorrélation vs causalité : théorie des évaluations d’impact\n\nDiscussion/questions (30 minutes)\n\nIllustrations autour de cas concrets\n\n12h - 13h30 : Pause déjeuner\n13h30 - 14h45 : Tour d’horizon des méthodes d’évaluation (45 minutes)\n\nMéthodes par assignation aléatoire\nBACI (Before-after-control-impact)\nAppariement, double différence, contrôles synthétiques\nRégression sur discontinuité et variables instrumentales\nCas d’application et avantages-inconvénients de chacune\nDurée :\n\nDiscussion/questions (30 minutes)\n\nFocus sur les méthodes qui ne seront pas approfondies\nDurée :\n\n14h45 - 15h : Pause\n15h - 17h : Étude d’articles : cadrage (30 minutes)\nDiscussion/questions (90 minutes)\n\nFormation des groupes\nIdentification des articles\nDébut des travaux pratiques (pas finis en séance)\nDébrieffing pour s’assurer que la méthode est bien comprise",
+    "crumbs": [
+      "Programme"
+    ]
+  },
+  {
+    "objectID": "00_programme.html#jour-2-initiation-à-r",
+    "href": "00_programme.html#jour-2-initiation-à-r",
+    "title": "Programme",
+    "section": "JOUR 2 : Initiation à R",
+    "text": "JOUR 2 : Initiation à R\n\n8h - 8h30 : Environnement technique (30 minutes)\n8h30 - 9h : Interface et formats (60 minutes)\n9h30 - 10h : Pause\n10h - 12h : Règles de code, assignation, objets (120 minutes)\n12h - 13h30 : Pause déjeuner\n13h30 - 15h : Fonctions, librairies, aide (90 minutes)\n15h - 15h30 : Pause\n15h30 - 17h : Import de données, valeurs manquantes (90 minutes)",
+    "crumbs": [
+      "Programme"
+    ]
+  },
+  {
+    "objectID": "00_programme.html#jour-3-initiation-à-r-et-restitution-des-lectures-darticles",
+    "href": "00_programme.html#jour-3-initiation-à-r-et-restitution-des-lectures-darticles",
+    "title": "Programme",
+    "section": "JOUR 3 : Initiation à R et restitution des lectures d’articles",
+    "text": "JOUR 3 : Initiation à R et restitution des lectures d’articles\n\n8h - 9h30 : Manipulations de données avec tidyverse (90 minutes)\n\nOpérateur “pipe” pour chaîner les opérations\nOpérations essentielles : sélectionner, filtrer…\n\n9h30 - 10h : Pause\n10h - 12h : Manipulations de données avec tidyverse (120 minutes)\n\nSuite des opérations essentielles\nJointures\n\n12h - 13h30 : Pause déjeuner\n13h30 - 15h : Tables (gt) et graphiques (ggplot2) (75 minutes)\n15h - 15h30 : Pause\n15h30 - 17h : Restitution des lectures d’articles (90 minutes)",
+    "crumbs": [
+      "Programme"
+    ]
+  },
+  {
+    "objectID": "00_programme.html#jour-4-données-spatiales-et-mapme.biodiversity",
+    "href": "00_programme.html#jour-4-données-spatiales-et-mapme.biodiversity",
+    "title": "Programme",
+    "section": "JOUR 4 : Données spatiales et mapme.biodiversity",
+    "text": "JOUR 4 : Données spatiales et mapme.biodiversity\n\n8h - 8h30 : Présentation des données spatiales (30 minutes)\n\nTypologies, sources et principes techniques\n\nQuestions / discussion (15 minutes)\n\nAvantages et inconvénients de ces sources\nExpériences des participants dans leur utilisation\nOpportunités pour leurs sujets de recherche\n\n8h30 - 9h15 : Manipulation de données spatiales d’AP sur R (45 minutes)\n\nTypes : vecteur, raster\nAnalogie avec les données tabulaires\nOpérations spécifiquement spatiales\n\n9h15 - 9h30 : Pause\n9h30 - 10h15 : Visualisation et analyse des données spatiales (45 minutes)\n\nPoint avec tmap\nClarification sur les projections\nPoursuite des exercices pratiques sur les aires protégées : comparaison des sources, statistiques descriptives\n\n12h - 13h30 : Pause déjeuner\n13h30 - 15h : Présentation du package mapme.biodiversity, discussion/questions et manipulation (90 minutes)\n\nConsultation des ressources disponibles\nDécouverte des données\nPréparation des données pour les aires protégées\n\n15h - 15h30 : Pause\n15h30 - 17h : Poursuite des analyses (90 minutes)\n\nCréation d’une grille sur le territoire\nExemple bref d’acquisition des données et calcul sur la grille",
+    "crumbs": [
+      "Programme"
+    ]
+  },
+  {
+    "objectID": "00_programme.html#jour-5-méthodes-expérimentales-et-observationnelles-avantaprès",
+    "href": "00_programme.html#jour-5-méthodes-expérimentales-et-observationnelles-avantaprès",
+    "title": "Programme",
+    "section": "JOUR 5 : Méthodes expérimentales et observationnelles avant/après",
+    "text": "JOUR 5 : Méthodes expérimentales et observationnelles avant/après\n\n8h - 9h30 : Randomisation (45 minutes)\nQuestions / discussion (15 minutes)\n\nDébat autour de la pertinence des RCT\nDéfis méthodologiques et pratique de la faisabilité\nQuestions éthiques\n\n9h30 - 10h : Pause\n10h - 12h : Application pratique : faisons “comme si” les AP étaient créées aléatoirement (45 minutes)\n\nAnalyse de données\nInterprétations\nTests d’équilibre\n\n12h - 13h30 : Pause déjeuner\n13h30 - 15h : Avant/Après (90 minutes)\nDiscussion/questions et manipulation\n\nLimites de l’approche\nMoyens de vérification des tendances\n\n15h - 15h30 : Pause\n15h30 - 17h : Tests de comparaison et d’équilibre avant-après et avec-sans (90 minutes)",
+    "crumbs": [
+      "Programme"
+    ]
+  },
+  {
+    "objectID": "00_programme.html#jour-6-méthodes-observationnelles-dappariement-matching",
+    "href": "00_programme.html#jour-6-méthodes-observationnelles-dappariement-matching",
+    "title": "Programme",
+    "section": "JOUR 6 : Méthodes observationnelles d’appariement (matching)",
+    "text": "JOUR 6 : Méthodes observationnelles d’appariement (matching)\n\n8h - 9h30 : Différentes unités/échelles d’analyse (AP, cellules, pixels…) (30 minutes)\nQuestions / discussion (15 minutes)\n\nDébat autour de la pertinence des RCT\nDéfis méthodologiques et pratique de la faisabilité\nQuestions éthiques\nReprise du maillage travaillé en fin de J4 (45 minutes)\n\n9h30 - 10h : Pause\n10h - 12h : Appariement (Matching) (90 minutes)\nQuestions / discussion (30 minutes)\n\nClarification du principe d’appariement\nVariables pertinentes pour les aires protégées\nQuestions sur les biais potentiels liés aux variables non observables\n\n12h - 13h30 : Pause déjeuner\n13h30 - 15h : Présentation du package MatchIt (30 minutes)\n\nExercices d’application aux aires protégées\nSpécification des variables\nAlgorithmes d’appariement\nParamètres associés (60 minutes)\n\n15h - 15h30 : Pause\n15h30 - 17h : Suite des exercices d’application aux aires protégées (90 minutes)\n\nTests d’équilibre",
+    "crumbs": [
+      "Programme"
+    ]
+  },
+  {
+    "objectID": "00_programme.html#jour-7-double-différence-et-conclusion",
+    "href": "00_programme.html#jour-7-double-différence-et-conclusion",
+    "title": "Programme",
+    "section": "JOUR 7 : Double différence et conclusion",
+    "text": "JOUR 7 : Double différence et conclusion\n\n8h - 9h30 : Double différence (DiD) (60 minutes)\nQuestions / discussion (30 minutes)\n\nIntérêt de l’approche DiD\nEnjeux de validité si plusieurs périodes de comparaison\nStratégies de simplification\n\n9h30 - 10h : Pause\n10h - 12h : Package did (30 minutes)\n\nMise en application\nUtilisation sur 2 périodes\nUtilisation sur N périodes\nVérification des tendances de prétraitement (30 minutes)\n\n12h - 13h30 : Pause déjeuner\n13h30 - 15h : Synthèse et outils pratiques (30 minutes)\n\nExercices d’application aux aires protégées\nSpécification des variables\nAlgorithmes d’appariement\nParamètres associés\nRetour sur les méthodes pas approfondies : discontinuité de la régression, synthetic matching… (60 minutes)\n\n15h - 15h30 : Pause\n15h30 - 17h : Évaluation de la formation et remise des certificats (90 minutes)",
+    "crumbs": [
+      "Programme"
+    ]
   }
 ]

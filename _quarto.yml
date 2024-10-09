@@ -13,11 +13,18 @@ book:
   date: "10/09/2024"
   chapters:
     - index.qmd
-    - 01_programme.qmd
-    - 02_introduction.qmd
-    - 03_data_preparation.qmd
-    - bases_R.qmd
-    - references.qmd
+    - 00_programme.qmd
+    - 01_introduction.qmd
+    - 02_bases_R.qmd
+    - 03_geodata.qmd
+    - 04_mapme_biodiversity.qmd
+    - 05_experimentations_aleatoires.qmd
+    - 06_avant_apres.qmd
+    - 07_unites_analyse.qmd
+    - 08_appariement.qmd
+    - 09_double_difference.qmd
+    - 10_synthese.qmd
+    - 11_references.qmd
 
 bibliography: references.bib
 
