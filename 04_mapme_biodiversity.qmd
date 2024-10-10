@@ -161,6 +161,7 @@ plan(sequential)
 ```{r echo=FALSE, eval=FALSE}
 write_rds(AP_Vahatra, "data/AP_Vahatra_mapme.rds")
 ```
+
 ```{r echo=FALSE}
 AP_Vahatra <- read_rds("data/AP_Vahatra_mapme.rds")
 ```
