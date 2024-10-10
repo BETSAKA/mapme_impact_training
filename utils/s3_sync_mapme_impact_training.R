@@ -3,10 +3,10 @@ library(stringr)
 library(aws.s3)
 library(purrr)
 
-# 
+# # 
 aws.s3::put_object(
-  file = "data/gadm/gadm41_MDG_3_pk.rds",
-  object = "diffusion/mapme_impact_training/data/gadm/gadm41_MDG_3_pk.rds",
+  file = "data/AP_Vahatra_mapme.rds",
+  object = "diffusion/mapme_impact_training/data/AP_Vahatra_mapme.rds",
   bucket = "fbedecarrats",
   region = "",
   multipart = TRUE)
@@ -22,7 +22,7 @@ put_to_s3 <- function(from, to) {
 }
 
 # A function to iterate/vectorize copy
-save_from_s3 <- function(from, to) {
+get_from_s3 <- function(from, to) {
   aws.s3::save_object(
     object = from,
     bucket = "fbedecarrats",
@@ -32,15 +32,18 @@ save_from_s3 <- function(from, to) {
 }
 
 
-my_files_local <- list.files("data", full.names = TRUE, recursive = TRUE)
+# To put files
+my_files_local <- list.files("data/gadm", full.names = TRUE, recursive = TRUE)
 my_files_local
-# Listing files in bucket
-my_files_s3 <- get_bucket_df(bucket = "fbedecarrats",
-                             prefix = "diffusion/mapme_impact_training",
-                             region = "") %>%
-  pluck("Key")
-my_files_s3
-
 my_files_dest <- paste0("diffusion/mapme_impact_training/", my_files_local)
 
 map2(my_files_local, my_files_dest, put_to_s3)
+
+# to get files
+# Listing files in bucket
+my_files_s3 <- get_bucket_df(bucket = "fbedecarrats",
+                             prefix = "diffusion/mapme_impact_training/data",
+                             region = "") %>%
+  pluck("Key")
+
+setdiff(my_files_dest, my_files_s3)

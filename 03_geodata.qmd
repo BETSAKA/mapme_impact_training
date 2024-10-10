@@ -92,7 +92,7 @@ Ces fichiers doivent non seulement être gardés ensemble, mais aussi porter exa
 
 ```{r}
 # Importer le shapefile
-AP_Vahatra_shp <- st_read("output/AP_Vahatra_shapefile.shp") 
+AP_Vahatra_shp <- st_read("output/AP_Vahatra_shapefile.shp", quiet = TRUE) 
 
 # Vérifier que les deux objets sont identiques
 identical(AP_Vahatra, AP_Vahatra_shp)
@@ -226,7 +226,7 @@ Maintenant, nous allons appliquer une variante sous forme de tests logique aux c
 
 ```{r}
 # Charger les données des aires protégées
-AP_Vahatra <- st_read("data/AP_Vahatra.geojson") %>%
+AP_Vahatra <- st_read("data/AP_Vahatra.geojson", quiet = TRUE) %>%
   st_make_valid()
 
 # Charger les communes
@@ -289,7 +289,7 @@ tm_shape(buffer_result) +
 Le calcul de la surface permet de connaître l'étendue spatiale d'une entité. Cela est très utile pour mesurer les surfaces des aires protégées ou des zones tampons.
 
 ```{r}
-library(units)
+library(units) # Facilite le traitement des km2, ha...
 # Désactiver la notation scientifique dans l'environnement R
 options(scipen = 999)
 
