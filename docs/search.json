@@ -28,5 +28,65 @@
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>L'outil mapme.biodiversity</span>"
     ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Evaluation d’impact de politiques et projets",
+    "section": "",
+    "text": "Preface",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#démarche",
+    "href": "index.html#démarche",
+    "title": "Evaluation d’impact de politiques et projets",
+    "section": "Démarche",
+    "text": "Démarche\nCe contenu est un support de formation conçu pour initier à l’économétrie spatiale chercheurs, doctorants et étudiants s’orientant vers une thèse. Le cas d’étude choisi pour servir de fil rouge à ces travaux est l’impact des aires protégées sur la déforestation, mais les méthodes décrites sont appropriées pour évaluer de nombreux types d’intervention ayant une dimension spatiale, que ce soit en matière d’environnement, d’agriculture, de gestion des risques ou de développement urbain. Le document a été élaboré avec les priorités suivantes :\n\nCompréhension des enjeux théoriques et méthodologiques soulevés par les évaluations d’impact ;\nIdentification des spécificités et opportunités liées à l’évaluation d’interventions spatialisées ;\nObtention de données spatiale permettant de démontrer et de quantifier l’impact ;\nCompréhension des différentes approches pour constituer un contrefactuel : randomisation, appariement, comparaison avant-après, différence de différences ;\nFamiliarisation avec l’outil de traitement statistique R;\nDéveloppement d’un regard critique sur la pertinence et la fiabilité des données mobilisées.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#tany-vao-et-betsaka",
+    "href": "index.html#tany-vao-et-betsaka",
+    "title": "Evaluation d’impact de politiques et projets",
+    "section": "Tany Vao et BETSAKA",
+    "text": "Tany Vao et BETSAKA\nCe contenu a été initialement développé afin de servir de support pédagogique pour l’atelier “évaluation des politiques” de la session 2022 des Universités en sciences sociales Tany Vao. Les universités Tany Vao visent à dispenser une formation à la recherche de haut niveau à l’attention de doctorants et jeunes chercheurs de Madagascar et d’Afrique de l’Ouest. Cet atelier a été réitéré à l’Université d’Antananarivo en 2023 et 2024 dans le cadre du projet BETSAKA. Le projet BETSAKA vise à évaluer l’impact environnemental et socioéconomique des politiques de conservation à Madagascar, en priorisant le renforcement des capacités locales de rercherche et le dialogue chercheurs-décideurs-opérationnels.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#contributions",
+    "href": "index.html#contributions",
+    "title": "Evaluation d’impact de politiques et projets",
+    "section": "Contributions",
+    "text": "Contributions\nCet ouvrage a bénéficié de nombreuses contributions :\n\nPour la première édition : Marc Bouvier, Kenneth Houngbedji, Jeanne de Montalembert et Marin Ferry ;\nPour la seconde édition : Lenaïg Moign et Clément Sambandahy ;\nPour la troisième édition : Ingrid Dallmann et Melvin Wong.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "10_synthese.html",
+    "href": "10_synthese.html",
+    "title": "10  Synthèse",
+    "section": "",
+    "text": "D’autres méthodes quantitatives existent : RDD, synthetic controls.\nEnjeux de croisement des méthodes.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Synthèse</span>"
+    ]
+  },
+  {
+    "objectID": "11_references.html",
+    "href": "11_references.html",
+    "title": "Bibliographie",
+    "section": "",
+    "text": "Barnier, Julien. 2022. “Introduction à R Et Au\nTidyverse.” https://juba.github.io/tidyverse/index.html.\n\n\nDevenish, Katie, Sébastien Desbureaux, Simon Willcock, and Julia P. G.\nJones. 2022. “On Track to Achieve No Net Loss of Forest at\nMadagascar’s Biggest Mine.” Nature\nSustainability 5 (6): 498–508. https://doi.org/10.1038/s41893-022-00850-7.\n\n\nGaliana, Lino, and Olivier Meslin, eds. 2022. “utilitR:\nDocumentation Collaborative Sur r.” https://www.book.utilitr.org/.\n\n\nGörgen, Darius A., and Om Prakash Bhandari. 2022.\nMapme.biodiversity: Efficient Monitoring of Global Biodiversity\nPortfolios. https://CRAN.R-project.org/package=mapme.biodiversity.\n\n\nGrolemund, Garrett, and Hadley Wickham. 2022. R for Data Science:\nImport, Tidy, Transform, Visualize, and Model Data. 1st edition.\nSebastopol, CA: O’Reilly Media. https://r4ds.had.co.nz/.\n\n\nLarmarange, Joseph. 2024. Guide-r : Guide Pour l’analyse de Données\nd’enquêtes Avec r. https://larmarange.github.io/guide-R/.\n\n\nLovelace, Robin, Jakub Nowosad, and Jannes Muenchow. 2022.\nGeocomputation with R. Boca Raton London New York: Routledge.\nhttps://geocompr.robinlovelace.net/.\n\n\nWolf, Christopher, Taal Levi, William J. Ripple, Diego A.\nZárrate-Charry, and Matthew G. Betts. 2021. “A Forest Loss Report\nCard for the World’s Protected Areas.” Nature Ecology &\nEvolution 5 (4): 520–29. https://doi.org/10.1038/s41559-021-01389-0.",
+    "crumbs": [
+      "Bibliographie"
+    ]
   }
 ]

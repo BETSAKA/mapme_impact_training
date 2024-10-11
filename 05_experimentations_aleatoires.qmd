@@ -6,4 +6,6 @@ editor_options:
 
 # Expérimentations par assignation aléatoire
 
+<iframe src="slides/fr/randomization.html" width="100%" height="400px">
 
+</iframe>
