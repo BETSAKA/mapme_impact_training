@@ -191,3 +191,4 @@ Ajoutez des variables d'intérêt et modifiez les paramètres de la fonction de 
 
 Réalisez une analyse analogue avec les données de feux. Rédigez une analyse interprétative.
 
+
