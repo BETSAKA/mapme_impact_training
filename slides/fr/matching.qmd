@@ -216,12 +216,11 @@ L’appariement est assez simple à mettre en œuvre, son principe est intuitif 
 
 Toutefois, on ne contrôle pas la [qualité]{style="color:red;"} de l’appariement, la notion du plus proche voisin est par nature relative.
 
-$\Rightarrow$ Certains plus proches voisins pourront être en fait éloignés. Or la méthode du plus proche voisin traite de la même manière des couples proches et moins proches.
-
+- Certains plus proches voisins pourront être en fait éloignés. Or la méthode du plus proche voisin traite de la même manière des couples proches et moins proches.
 
 Apparier avec un seul individu prive de l’information apportée par tous les autres ce qui [réduit a priori]{style="color:red;"} la précision de l’estimation.
 
-$\Rightarrow$ Par exemple, certains bénéficiaires peuvent avoir plusieurs jumeaux très proches : on peut considérer qu’il est dommage d’en choisir un seul (plus ou moins arbitrairement).
+- Certains bénéficiaires peuvent avoir plusieurs jumeaux proches : on peut considérer qu’il est dommage de n’en choisir qu'un.
 
 ## Choix de la taille de la fenêtre 
 
@@ -264,9 +263,7 @@ $$
 (Y(0), Y(1)) \perp T \mid X \Rightarrow (Y(0), Y(1)) \perp T \mid \pi(X_i)
 $$
 
-Cette propriété diminue le nombre de dimensions des comparaisons, puisque l’on ramène le nombre de variables de conditionnement à une seule et unique variable, qui serait un résumé univarié de l’ensemble des covariables.
-
-Cependant, le PSM n’est parfois non connu et il est donc nécessaire de l’estimer.
+Cette propriété diminue le nombre de dimensions des comparaisons, puisque l’on ramène le nombre de variables de conditionnement à une seule : résumé univarié de l’ensemble des covariables.
 
 ## Estimation du score de propension 
 

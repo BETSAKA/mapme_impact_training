@@ -148,5 +148,75 @@
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Expérimentations par assignation aléatoire</span>"
     ]
+  },
+  {
+    "objectID": "08_appariement.html",
+    "href": "08_appariement.html",
+    "title": "8  Méthodes d’appariement",
+    "section": "",
+    "text": "8.1 La question de la comparabilité des groupes\nOn a vu dans le chapitre précédent que les comparaisons simples réalisées entre les premières et les dernières aires à avoir été formellement protégées pose problème.\nOn va maintenant chercher à renforcer la comparabilité entre le groupe de traitement et le groupe de contrôle en réalisant un appariemment (cf. diapos de présentation).\nOn va utiliser le package {MatchIt} : ne pas hésiter à se référer à la documentation du package.\nOn va commencer par réaliser quelques ajustements, car {MatchIt} requiert qu’aucune valeur des variables mobilisées ne soit manquante. On va donc retirer les observations comportant des NA.\nCode\nlibrary(tidyverse) # Simplifie la manipulation de données\nlibrary(lubridate) # Simplifie les opérations sur des dates\nlibrary(sf) # Pour traiter les données spatiales\nlibrary(MatchIt) # Pour réaliser les appariements.\nlibrary(cobalt) # Pour les tests d'équilibre sur l'appariement\nlibrary(gt) # Pour faire de jolies tables\nlibrary(stargazer) # Pour présenter les résultats de régressions\nlibrary(mapme.biodiversity)\nlibrary(htmltools)\n\n# Désactiver les notations scientifiques\noptions(scipen = 999)\n\n# Charger les données\nAP_Vahatra &lt;- read_rds(\"data/AP_Vahatra_mapme.rds\") %&gt;%\n  portfolio_wide() %&gt;%\n  mutate(Groupe = ifelse(year(date_creation) &lt; 2015, \"Traitement\", \"Contrôle\"))\n\n# Préparer les données sans valeurs manquantes\nVahatra_defor_noNA &lt;- AP_Vahatra %&gt;%\n  mutate(surface_ha = as.numeric(st_area(AP_Vahatra)) / 10000, \n         couv_foret_2000 = `treecover_area_2000-01-01_treecover_ha` / surface_ha * 100,\n         altitude = `elevation_2000-02-01_elevation_mean_m`,\n         indice_accidente = `slope_2000-02-01_slope_mean_degrees`,\n         dist_ville = `traveltime_2015-01-01_5k_110mio_traveltime_mean_minutes`,\n         traitement = ifelse(year(date_creation) &lt; 2015, 1, 0),\n         taux_deforestation_2000_2014 = \n           -((`treecover_area_2014-01-01_treecover_ha` / \n              `treecover_area_2000-01-01_treecover_ha`)^(1/14) - 1) * 100) %&gt;%\n  filter(!is.na(couv_foret_2000), !is.na(dist_ville), !is.na(altitude), !is.na(indice_accidente))\n\nsummary(Vahatra_defor_noNA)\n\nVahatra_defor_noNA %&gt;%\n  st_drop_geometry() %&gt;%\n  group_by(Groupe, traitement) %&gt;%\n  summarise(effectif = n())\nCode\nVahatra_defor_noNA %&gt;%\n  st_drop_geometry() %&gt;%\n  group_by(Groupe) %&gt;%\n  summarize(`Nombre d'aires protégées` = n()) %&gt;%\n  gt() %&gt;%\n  tab_header(\"Observations par groupe avant appariemment\") %&gt;%\n  tab_source_note(\"Source : Association Vahatra et données GFC\")\n\n\n\n\n\n\n\n\nObservations par groupe avant appariemment\n\n\nGroupe\nNombre d'aires protégées\n\n\n\n\nContrôle\n53\n\n\nTraitement\n44\n\n\n\nSource : Association Vahatra et données GFC",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Méthodes d'appariement</span>"
+    ]
+  },
+  {
+    "objectID": "08_appariement.html#exercice-intermédiaire",
+    "href": "08_appariement.html#exercice-intermédiaire",
+    "title": "8  Méthodes d’appariement",
+    "section": "8.2 Exercice intermédiaire",
+    "text": "8.2 Exercice intermédiaire\nAjoutez des variables d’intérêt et modifiez les paramètres de la fonction de matching.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Méthodes d'appariement</span>"
+    ]
+  },
+  {
+    "objectID": "08_appariement.html#exercice-avancé",
+    "href": "08_appariement.html#exercice-avancé",
+    "title": "8  Méthodes d’appariement",
+    "section": "8.3 Exercice avancé",
+    "text": "8.3 Exercice avancé\nRéalisez une analyse analogue avec les données de feux. Rédigez une analyse interprétative.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Méthodes d'appariement</span>"
+    ]
+  },
+  {
+    "objectID": "08_appariement.html#mesure-de-la-propension",
+    "href": "08_appariement.html#mesure-de-la-propension",
+    "title": "8  Méthodes d’appariement",
+    "section": "8.2 Mesure de la propension",
+    "text": "8.2 Mesure de la propension\nPour commencer, nous allons spécifier le modèle probit qui estime dans quelle mesure la propension pour une aire d’avoir été protégée avant 2015 dépend de sa taille, de son taux de couverture forestière en 2000, de son altitude, de son caractère accidenté et de sa distance d’une ville d’au moins 5000 habitants.\nCette spécification peut se représenter selon l’équation suivante qui représente un modèle probit. Un modèle probit, tout comme le logit, est un modèle de choix binaire.\n\n\nCode\n# Spécification du modèle probit\npscor &lt;- traitement ~  surface_ha + \n                       couv_foret_2000 + \n                       altitude +\n                       indice_accidente + \n                       dist_ville\n\n\nOn va maintenant réaliser une régression pour connaître l’influence de ces facteurs dans la désignation des aires comme protégées.\n\n\nCode\n# Régression probit\nreg_select &lt;- glm(formula = pscor,\n                  family = binomial(link = \"probit\"),\n                  data = Vahatra_defor_noNA)\n\nmatch_out1 &lt;- stargazer(reg_select, type = \"html\") \n\n\n\n\n\n\n\n\n\n\n\n\nDependent variable:\n\n\n\n\n\n\n\ntraitement\n\n\n\n\n\nsurface_ha\n-0.00000\n\n\n\n(0.00000)\n\n\n\n\n\n\ncouv_foret_2000\n0.001\n\n\n\n(0.005)\n\n\n\n\n\n\naltitude\n-0.0004\n\n\n\n(0.0004)\n\n\n\n\n\n\nindice_accidente\n0.005\n\n\n\n(0.030)\n\n\n\n\n\n\ndist_ville\n0.003***\n\n\n\n(0.001)\n\n\n\n\n\n\nConstant\n-0.547\n\n\n\n(0.343)\n\n\n\n\n\n\n\n\n\nObservations\n97\n\n\nLog Likelihood\n-60.920\n\n\nAkaike Inf. Crit.\n133.839\n\n\n\n\n\nNote:\n*p&lt;0.1; **p&lt;0.05; ***p&lt;0.01\n\n\n\n\n\n\n\nExercice : analysez ce résultat. Quels facteurs sont corrélés avec la désignation précoce comme aire protégée ?",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Méthodes d'appariement</span>"
+    ]
+  },
+  {
+    "objectID": "08_appariement.html#appariement-sur-score-de-propension",
+    "href": "08_appariement.html#appariement-sur-score-de-propension",
+    "title": "8  Méthodes d’appariement",
+    "section": "8.3 Appariement sur score de propension",
+    "text": "8.3 Appariement sur score de propension\nOn va maintenant utiliser ce modèle pour comparer les aires protégées traitées en premier par rapport à celles traitées plus récemment.\n\n\nCode\n# Calcul du matching\ndef_00_14_match &lt;- matchit(formula = pscor,\n                           family = binomial(link = \"probit\"),\n                           method = \"nearest\",\n                           discard = \"both\",\n                           replace = FALSE,\n                           distance = \"glm\",\n                           data = Vahatra_defor_noNA)\n\nprint(def_00_14_match)\n\n\nA matchit object\n - method: 1:1 nearest neighbor matching without replacement\n - distance: Propensity score [common support]\n             - estimated with logistic regression\n - common support: units from both groups dropped\n - number of obs.: 97 (original), 78 (matched)\n - target estimand: ATT\n - covariates: surface_ha, couv_foret_2000, altitude, indice_accidente, dist_ville\n\n\nOn peut maintenant observer les équilibres entre les groupes traités et contrôle avant et après l’appariement.\n\n\nCode\nsummary(def_00_14_match)\n\n\n\nCall:\nmatchit(formula = pscor, data = Vahatra_defor_noNA, method = \"nearest\", \n    distance = \"glm\", discard = \"both\", replace = FALSE, family = binomial(link = \"probit\"))\n\nSummary of Balance for All Data:\n                 Means Treated Means Control Std. Mean Diff. Var. Ratio\ndistance                0.5143        0.4032          0.5970     1.9343\nsurface_ha          65093.8897    66539.7728         -0.0184     0.5595\ncouv_foret_2000        71.9537       62.1290          0.3384     0.6778\naltitude              589.4707      518.9928          0.1459     0.6982\nindice_accidente       11.0161        9.5870          0.2145     1.0678\ndist_ville            260.4379      147.0780          0.5255     2.4284\n                 eCDF Mean eCDF Max\ndistance            0.1840   0.3049\nsurface_ha          0.0993   0.2517\ncouv_foret_2000     0.0915   0.2333\naltitude            0.0943   0.2294\nindice_accidente    0.0729   0.1758\ndist_ville          0.1822   0.3263\n\nSummary of Balance for Matched Data:\n                 Means Treated Means Control Std. Mean Diff. Var. Ratio\ndistance                0.4666        0.4483          0.0983     1.1599\nsurface_ha          67525.2840    53400.1694          0.1799     0.9542\ncouv_foret_2000        70.1568       72.2206         -0.0711     0.8134\naltitude              563.7866      449.9603          0.2356     0.9791\nindice_accidente       10.6267        9.8470          0.1171     1.0674\ndist_ville            204.5025      168.8781          0.1651     0.9053\n                 eCDF Mean eCDF Max Std. Pair Dist.\ndistance            0.0404   0.1795          0.1149\nsurface_ha          0.1049   0.2564          1.0223\ncouv_foret_2000     0.0634   0.2051          0.8333\naltitude            0.0843   0.2308          1.0357\nindice_accidente    0.0550   0.1538          1.0324\ndist_ville          0.0941   0.2308          0.3906\n\nSample Sizes:\n          Control Treated\nAll            53      44\nMatched        39      39\nUnmatched       9       0\nDiscarded       5       5\n\n\n\nExercice : Étudiez les tables ci-dessus. Quel effet a eu l’appariement sur l’équilibre des variables entre le groupe de traitement et le groupe de contrôle ? Combien d’observations ont été écartées ?\n\nOn peut observer la distance entre groupe de traitement et de contrôle.\n\n\nCode\nplot(def_00_14_match, type = \"jitter\", interactive = FALSE)\n\n\n\n\n\n\n\n\n\nOn peut également représenter l’équilibre entre les variables avant et après traitement avec les graphiques suivants.\n\n\nCode\nbal.plot(def_00_14_match, var.name = \"dist_ville\", which = \"both\")\n\n\n\n\n\n\n\n\n\n\nExercice : Quel effet a eu l’appariement sur la variable de distance à la ville ? Les autres variables d’appariement produisent-elles un effet aussi visible ?",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Méthodes d'appariement</span>"
+    ]
+  },
+  {
+    "objectID": "08_appariement.html#estimation-du-résultat-en-contrôlant-pour-les-variables-dappariement",
+    "href": "08_appariement.html#estimation-du-résultat-en-contrôlant-pour-les-variables-dappariement",
+    "title": "8  Méthodes d’appariement",
+    "section": "8.4 Estimation du résultat en contrôlant pour les variables d’appariement",
+    "text": "8.4 Estimation du résultat en contrôlant pour les variables d’appariement\nLe modèle qu’on utilise pour estimer l’impact est très proche de celui exposé ci-dessus, à la différence que la variable de traitement passe dans la partie droite, et qu’elle est remplacée par la déforestation.\n\n\nCode\n# Spécification du modèle pour l'impact\nestimp &lt;- taux_deforestation_2000_2014 ~   \n                          traitement +\n                          surface_ha + \n                          couv_foret_2000 + \n                          altitude +\n                          indice_accidente + \n                          dist_ville\n\n\nOn va donc réaliser une régression, en tenant compte des pondérations générées par l’algorithme d’appariement (variable “weight”).\n\n\nCode\n# On extrait les données de l'appariement\ndef_00_14_match_data &lt;- match.data(def_00_14_match)\n\n# Régression avec pondérations\ndef_00_14_match_est &lt;- lm(formula = estimp,\n                          data = def_00_14_match_data,\n                          weights = weights)\n\n# Présentation des résultats\nmatch_out2 &lt;- stargazer(def_00_14_match_est, type = \"html\")\n\n\n\n\n\n\n\n\n\n\n\n\nDependent variable:\n\n\n\n\n\n\n\ntaux_deforestation_2000_2014\n\n\n\n\n\ntraitement\n-0.278*\n\n\n\n(0.158)\n\n\n\n\n\n\nsurface_ha\n0.00000***\n\n\n\n(0.00000)\n\n\n\n\n\n\ncouv_foret_2000\n-0.001\n\n\n\n(0.003)\n\n\n\n\n\n\naltitude\n0.0001\n\n\n\n(0.0002)\n\n\n\n\n\n\nindice_accidente\n-0.009\n\n\n\n(0.017)\n\n\n\n\n\n\ndist_ville\n-0.001\n\n\n\n(0.001)\n\n\n\n\n\n\nConstant\n0.795***\n\n\n\n(0.228)\n\n\n\n\n\n\n\n\n\nObservations\n78\n\n\nR2\n0.156\n\n\nAdjusted R2\n0.084\n\n\nResidual Std. Error\n0.689 (df = 71)\n\n\nF Statistic\n2.184* (df = 6; 71)\n\n\n\n\n\nNote:\n*p&lt;0.1; **p&lt;0.05; ***p&lt;0.01",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Méthodes d'appariement</span>"
+    ]
+  },
+  {
+    "objectID": "08_appariement.html#exercices",
+    "href": "08_appariement.html#exercices",
+    "title": "8  Méthodes d’appariement",
+    "section": "8.5 Exercices",
+    "text": "8.5 Exercices\n\n8.5.1 Exercice simple\nAnalysez, interprétez et critiquez les résultats ci-dessus.\n\n\n8.5.2 Exercice intermédiaire\nAjoutez des variables d’intérêt et modifiez les paramètres de la fonction de matching.\n\n\n8.5.3 Exercice avancé\nRéalisez une analyse analogue avec les données de feux. Rédigez une analyse interprétative.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Méthodes d'appariement</span>"
+    ]
   }
 ]

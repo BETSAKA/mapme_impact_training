@@ -1359,9 +1359,13 @@ display:block!important;
 <h2>Limites du plus proche voisin</h2>
 <p>L’appariement est assez simple à mettre en œuvre, son principe est intuitif et ne demande pas de choix de paramètres.</p>
 <p>Toutefois, on ne contrôle pas la <span style="color:red;">qualité</span> de l’appariement, la notion du plus proche voisin est par nature relative.</p>
-<p><span class="math inline">\(\Rightarrow\)</span> Certains plus proches voisins pourront être en fait éloignés. Or la méthode du plus proche voisin traite de la même manière des couples proches et moins proches.</p>
+<ul>
+<li>Certains plus proches voisins pourront être en fait éloignés. Or la méthode du plus proche voisin traite de la même manière des couples proches et moins proches.</li>
+</ul>
 <p>Apparier avec un seul individu prive de l’information apportée par tous les autres ce qui <span style="color:red;">réduit a priori</span> la précision de l’estimation.</p>
-<p><span class="math inline">\(\Rightarrow\)</span> Par exemple, certains bénéficiaires peuvent avoir plusieurs jumeaux très proches : on peut considérer qu’il est dommage d’en choisir un seul (plus ou moins arbitrairement).</p>
+<ul>
+<li>Certains bénéficiaires peuvent avoir plusieurs jumeaux proches : on peut considérer qu’il est dommage de n’en choisir qu’un.</li>
+</ul>
 </section>
 <section id="choix-de-la-taille-de-la-fenêtre" class="slide level2">
 <h2>Choix de la taille de la fenêtre</h2>
@@ -1394,8 +1398,7 @@ display:block!important;
 <p><span class="math display">\[
 (Y(0), Y(1)) \perp T \mid X \Rightarrow (Y(0), Y(1)) \perp T \mid \pi(X_i)
 \]</span></p>
-<p>Cette propriété diminue le nombre de dimensions des comparaisons, puisque l’on ramène le nombre de variables de conditionnement à une seule et unique variable, qui serait un résumé univarié de l’ensemble des covariables.</p>
-<p>Cependant, le PSM n’est parfois non connu et il est donc nécessaire de l’estimer.</p>
+<p>Cette propriété diminue le nombre de dimensions des comparaisons, puisque l’on ramène le nombre de variables de conditionnement à une seule : résumé univarié de l’ensemble des covariables.</p>
 </section>
 <section id="estimation-du-score-de-propension" class="slide level2">
 <h2>Estimation du score de propension</h2>

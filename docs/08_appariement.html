@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -192,8 +226,23 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#la-question-de-la-comparabilité-des-groupes" id="toc-la-question-de-la-comparabilité-des-groupes" class="nav-link active" data-scroll-target="#la-question-de-la-comparabilité-des-groupes"><span class="header-section-number">8.1</span> La question de la comparabilité des groupes</a></li>
+  <li><a href="#mesure-de-la-propension" id="toc-mesure-de-la-propension" class="nav-link" data-scroll-target="#mesure-de-la-propension"><span class="header-section-number">8.2</span> Mesure de la propension</a></li>
+  <li><a href="#appariement-sur-score-de-propension" id="toc-appariement-sur-score-de-propension" class="nav-link" data-scroll-target="#appariement-sur-score-de-propension"><span class="header-section-number">8.3</span> Appariement sur score de propension</a></li>
+  <li><a href="#estimation-du-résultat-en-contrôlant-pour-les-variables-dappariement" id="toc-estimation-du-résultat-en-contrôlant-pour-les-variables-dappariement" class="nav-link" data-scroll-target="#estimation-du-résultat-en-contrôlant-pour-les-variables-dappariement"><span class="header-section-number">8.4</span> Estimation du résultat en contrôlant pour les variables d’appariement</a></li>
+  <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices"><span class="header-section-number">8.5</span> Exercices</a>
+  <ul class="collapse">
+  <li><a href="#exercice-simple" id="toc-exercice-simple" class="nav-link" data-scroll-target="#exercice-simple"><span class="header-section-number">8.5.1</span> Exercice simple</a></li>
+  <li><a href="#exercice-intermédiaire" id="toc-exercice-intermédiaire" class="nav-link" data-scroll-target="#exercice-intermédiaire"><span class="header-section-number">8.5.2</span> Exercice intermédiaire</a></li>
+  <li><a href="#exercice-avancé" id="toc-exercice-avancé" class="nav-link" data-scroll-target="#exercice-avancé"><span class="header-section-number">8.5.3</span> Exercice avancé</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -219,8 +268,1007 @@ ul.task-list li input[type="checkbox"] {
 
 <iframe src="slides/fr/matching.html" width="100%" height="400px">
 </iframe>
+<section id="la-question-de-la-comparabilité-des-groupes" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="la-question-de-la-comparabilité-des-groupes"><span class="header-section-number">8.1</span> La question de la comparabilité des groupes</h2>
+<p>On a vu dans le chapitre précédent que les comparaisons simples réalisées entre les premières et les dernières aires à avoir été formellement protégées pose problème.</p>
+<p>On va maintenant chercher à renforcer la comparabilité entre le groupe de traitement et le groupe de contrôle en réalisant un appariemment (cf.&nbsp;diapos de présentation).</p>
+<p>On va utiliser le package {MatchIt} : ne pas hésiter à se référer à <a href="https://kosukeimai.github.io/MatchIt/index.html">la documentation du package</a>.</p>
+<p>On va commencer par réaliser quelques ajustements, car {MatchIt} requiert qu’aucune valeur des variables mobilisées ne soit manquante. On va donc retirer les observations comportant des <code>NA</code>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># Simplifie la manipulation de données</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate) <span class="co"># Simplifie les opérations sur des dates</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># Pour traiter les données spatiales</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MatchIt) <span class="co"># Pour réaliser les appariements.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cobalt) <span class="co"># Pour les tests d'équilibre sur l'appariement</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt) <span class="co"># Pour faire de jolies tables</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer) <span class="co"># Pour présenter les résultats de régressions</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapme.biodiversity)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(htmltools)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Désactiver les notations scientifiques</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Charger les données</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>AP_Vahatra <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/AP_Vahatra_mapme.rds"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">portfolio_wide</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Groupe =</span> <span class="fu">ifelse</span>(<span class="fu">year</span>(date_creation) <span class="sc">&lt;</span> <span class="dv">2015</span>, <span class="st">"Traitement"</span>, <span class="st">"Contrôle"</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Préparer les données sans valeurs manquantes</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>Vahatra_defor_noNA <span class="ot">&lt;-</span> AP_Vahatra <span class="sc">%&gt;%</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">surface_ha =</span> <span class="fu">as.numeric</span>(<span class="fu">st_area</span>(AP_Vahatra)) <span class="sc">/</span> <span class="dv">10000</span>, </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">couv_foret_2000 =</span> <span class="st">`</span><span class="at">treecover_area_2000-01-01_treecover_ha</span><span class="st">`</span> <span class="sc">/</span> surface_ha <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">altitude =</span> <span class="st">`</span><span class="at">elevation_2000-02-01_elevation_mean_m</span><span class="st">`</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">indice_accidente =</span> <span class="st">`</span><span class="at">slope_2000-02-01_slope_mean_degrees</span><span class="st">`</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">dist_ville =</span> <span class="st">`</span><span class="at">traveltime_2015-01-01_5k_110mio_traveltime_mean_minutes</span><span class="st">`</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">traitement =</span> <span class="fu">ifelse</span>(<span class="fu">year</span>(date_creation) <span class="sc">&lt;</span> <span class="dv">2015</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">taux_deforestation_2000_2014 =</span> </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>           <span class="sc">-</span>((<span class="st">`</span><span class="at">treecover_area_2014-01-01_treecover_ha</span><span class="st">`</span> <span class="sc">/</span> </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>              <span class="st">`</span><span class="at">treecover_area_2000-01-01_treecover_ha</span><span class="st">`</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">14</span>) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(couv_foret_2000), <span class="sc">!</span><span class="fu">is.na</span>(dist_ville), <span class="sc">!</span><span class="fu">is.na</span>(altitude), <span class="sc">!</span><span class="fu">is.na</span>(indice_accidente))</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Vahatra_defor_noNA)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Vahatra_defor_noNA <span class="sc">%&gt;%</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Groupe, traitement) <span class="sc">%&gt;%</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">effectif =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Vahatra_defor_noNA <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Groupe) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="st">`</span><span class="at">Nombre d'aires protégées</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">"Observations par groupe avant appariemment"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(<span class="st">"Source : Association Vahatra et données GFC"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="kddbyesibd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kddbyesibd table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#kddbyesibd thead, #kddbyesibd tbody, #kddbyesibd tfoot, #kddbyesibd tr, #kddbyesibd td, #kddbyesibd th {
+  border-style: none;
+}
+
+#kddbyesibd p {
+  margin: 0;
+  padding: 0;
+}
+
+#kddbyesibd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#kddbyesibd .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kddbyesibd .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kddbyesibd .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kddbyesibd .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kddbyesibd .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kddbyesibd .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kddbyesibd .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kddbyesibd .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#kddbyesibd .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#kddbyesibd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kddbyesibd .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kddbyesibd .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kddbyesibd .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kddbyesibd .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kddbyesibd .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#kddbyesibd .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#kddbyesibd .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#kddbyesibd .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kddbyesibd .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#kddbyesibd .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kddbyesibd .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kddbyesibd .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kddbyesibd .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kddbyesibd .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kddbyesibd .gt_left {
+  text-align: left;
+}
+
+#kddbyesibd .gt_center {
+  text-align: center;
+}
+
+#kddbyesibd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kddbyesibd .gt_font_normal {
+  font-weight: normal;
+}
+
+#kddbyesibd .gt_font_bold {
+  font-weight: bold;
+}
+
+#kddbyesibd .gt_font_italic {
+  font-style: italic;
+}
+
+#kddbyesibd .gt_super {
+  font-size: 65%;
+}
+
+#kddbyesibd .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#kddbyesibd .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#kddbyesibd .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#kddbyesibd .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#kddbyesibd .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#kddbyesibd .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#kddbyesibd .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#kddbyesibd .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#kddbyesibd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_heading">
+<th colspan="2" class="gt_heading gt_title gt_font_normal gt_bottom_border">Observations par groupe avant appariemment</th>
+</tr>
+<tr class="odd gt_col_headings">
+<th id="Groupe" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Groupe</th>
+<th id="Nombre-d'aires-protégées" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Nombre d'aires protégées</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Groupe">Contrôle</td>
+<td class="gt_row gt_right" headers="Nombre d'aires protégées">53</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Groupe">Traitement</td>
+<td class="gt_row gt_right" headers="Nombre d'aires protégées">44</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="even">
+<td colspan="2" class="gt_sourcenote">Source : Association Vahatra et données GFC</td>
+</tr>
+</tfoot>
+
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="mesure-de-la-propension" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="mesure-de-la-propension"><span class="header-section-number">8.2</span> Mesure de la propension</h2>
+<p>Pour commencer, nous allons spécifier le modèle probit qui estime dans quelle mesure la propension pour une aire d’avoir été protégée avant 2015 dépend de sa taille, de son taux de couverture forestière en 2000, de son altitude, de son caractère accidenté et de sa distance d’une ville d’au moins 5000 habitants.</p>
+<p>Cette spécification peut se représenter selon l’équation suivante qui représente un modèle probit. Un modèle probit, tout comme le logit, est un modèle de choix binaire.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Spécification du modèle probit</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pscor <span class="ot">&lt;-</span> traitement <span class="sc">~</span>  surface_ha <span class="sc">+</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                       couv_foret_2000 <span class="sc">+</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                       altitude <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                       indice_accidente <span class="sc">+</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                       dist_ville</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>On va maintenant réaliser une régression pour connaître l’influence de ces facteurs dans la désignation des aires comme protégées.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression probit</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>reg_select <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">formula =</span> pscor,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"probit"</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> Vahatra_defor_noNA)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>match_out1 <span class="ot">&lt;-</span> <span class="fu">stargazer</span>(reg_select, <span class="at">type =</span> <span class="st">"html"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div style="width: 300px;">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td colspan="2" style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td><em>Dependent variable:</em></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td>traitement</td>
+</tr>
+<tr class="odd">
+<td colspan="2" style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">surface_ha</td>
+<td>-0.00000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td>(0.00000)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">couv_foret_2000</td>
+<td>0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td>(0.005)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">altitude</td>
+<td>-0.0004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td>(0.0004)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">indice_accidente</td>
+<td>0.005</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td>(0.030)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dist_ville</td>
+<td>0.003<sup>***</sup></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td>(0.001)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Constant</td>
+<td>-0.547</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td>(0.343)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td colspan="2" style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Observations</td>
+<td>97</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Log Likelihood</td>
+<td>-60.920</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Akaike Inf. Crit.</td>
+<td>133.839</td>
+</tr>
+<tr class="even">
+<td colspan="2" style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Note:</em></td>
+<td style="text-align: right;"><sup>*</sup>p&lt;0.1; <sup>**</sup>p&lt;0.05; <sup>***</sup>p&lt;0.01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Exercice : analysez ce résultat. Quels facteurs sont corrélés avec la désignation précoce comme aire protégée ?</p>
+</blockquote>
+</section>
+<section id="appariement-sur-score-de-propension" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="appariement-sur-score-de-propension"><span class="header-section-number">8.3</span> Appariement sur score de propension</h2>
+<p>On va maintenant utiliser ce modèle pour comparer les aires protégées traitées en premier par rapport à celles traitées plus récemment.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcul du matching</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>def_00_14_match <span class="ot">&lt;-</span> <span class="fu">matchit</span>(<span class="at">formula =</span> pscor,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"probit"</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">method =</span> <span class="st">"nearest"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">discard =</span> <span class="st">"both"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">replace =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">distance =</span> <span class="st">"glm"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">data =</span> Vahatra_defor_noNA)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(def_00_14_match)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>A matchit object
+ - method: 1:1 nearest neighbor matching without replacement
+ - distance: Propensity score [common support]
+             - estimated with logistic regression
+ - common support: units from both groups dropped
+ - number of obs.: 97 (original), 78 (matched)
+ - target estimand: ATT
+ - covariates: surface_ha, couv_foret_2000, altitude, indice_accidente, dist_ville</code></pre>
+</div>
+</div>
+<p>On peut maintenant observer les équilibres entre les groupes traités et contrôle avant et après l’appariement.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(def_00_14_match)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+matchit(formula = pscor, data = Vahatra_defor_noNA, method = "nearest", 
+    distance = "glm", discard = "both", replace = FALSE, family = binomial(link = "probit"))
+
+Summary of Balance for All Data:
+                 Means Treated Means Control Std. Mean Diff. Var. Ratio
+distance                0.5143        0.4032          0.5970     1.9343
+surface_ha          65093.8897    66539.7728         -0.0184     0.5595
+couv_foret_2000        71.9537       62.1290          0.3384     0.6778
+altitude              589.4707      518.9928          0.1459     0.6982
+indice_accidente       11.0161        9.5870          0.2145     1.0678
+dist_ville            260.4379      147.0780          0.5255     2.4284
+                 eCDF Mean eCDF Max
+distance            0.1840   0.3049
+surface_ha          0.0993   0.2517
+couv_foret_2000     0.0915   0.2333
+altitude            0.0943   0.2294
+indice_accidente    0.0729   0.1758
+dist_ville          0.1822   0.3263
+
+Summary of Balance for Matched Data:
+                 Means Treated Means Control Std. Mean Diff. Var. Ratio
+distance                0.4666        0.4483          0.0983     1.1599
+surface_ha          67525.2840    53400.1694          0.1799     0.9542
+couv_foret_2000        70.1568       72.2206         -0.0711     0.8134
+altitude              563.7866      449.9603          0.2356     0.9791
+indice_accidente       10.6267        9.8470          0.1171     1.0674
+dist_ville            204.5025      168.8781          0.1651     0.9053
+                 eCDF Mean eCDF Max Std. Pair Dist.
+distance            0.0404   0.1795          0.1149
+surface_ha          0.1049   0.2564          1.0223
+couv_foret_2000     0.0634   0.2051          0.8333
+altitude            0.0843   0.2308          1.0357
+indice_accidente    0.0550   0.1538          1.0324
+dist_ville          0.0941   0.2308          0.3906
+
+Sample Sizes:
+          Control Treated
+All            53      44
+Matched        39      39
+Unmatched       9       0
+Discarded       5       5</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercice</strong> : Étudiez les tables ci-dessus. Quel effet a eu l’appariement sur l’équilibre des variables entre le groupe de traitement et le groupe de contrôle ? Combien d’observations ont été écartées ?</p>
+</blockquote>
+<p>On peut observer la distance entre groupe de traitement et de contrôle.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(def_00_14_match, <span class="at">type =</span> <span class="st">"jitter"</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_appariement_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>On peut également représenter l’équilibre entre les variables avant et après traitement avec les graphiques suivants.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bal.plot</span>(def_00_14_match, <span class="at">var.name =</span> <span class="st">"dist_ville"</span>, <span class="at">which =</span> <span class="st">"both"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_appariement_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Exercice : Quel effet a eu l’appariement sur la variable de distance à la ville ? Les autres variables d’appariement produisent-elles un effet aussi visible ?</p>
+</blockquote>
+</section>
+<section id="estimation-du-résultat-en-contrôlant-pour-les-variables-dappariement" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="estimation-du-résultat-en-contrôlant-pour-les-variables-dappariement"><span class="header-section-number">8.4</span> Estimation du résultat en contrôlant pour les variables d’appariement</h2>
+<p>Le modèle qu’on utilise pour estimer l’impact est très proche de celui exposé ci-dessus, à la différence que la variable de traitement passe dans la partie droite, et qu’elle est remplacée par la déforestation.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Spécification du modèle pour l'impact</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>estimp <span class="ot">&lt;-</span> taux_deforestation_2000_2014 <span class="sc">~</span>   </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                          traitement <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                          surface_ha <span class="sc">+</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                          couv_foret_2000 <span class="sc">+</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                          altitude <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                          indice_accidente <span class="sc">+</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                          dist_ville</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>On va donc réaliser une régression, en tenant compte des pondérations générées par l’algorithme d’appariement (variable “weight”).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On extrait les données de l'appariement</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>def_00_14_match_data <span class="ot">&lt;-</span> <span class="fu">match.data</span>(def_00_14_match)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression avec pondérations</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>def_00_14_match_est <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> estimp,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> def_00_14_match_data,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">weights =</span> weights)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Présentation des résultats</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>match_out2 <span class="ot">&lt;-</span> <span class="fu">stargazer</span>(def_00_14_match_est, <span class="at">type =</span> <span class="st">"html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div style="width: 500px;">
+<table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td colspan="2" style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td><em>Dependent variable:</em></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td>taux_deforestation_2000_2014</td>
+</tr>
+<tr class="odd">
+<td colspan="2" style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">traitement</td>
+<td>-0.278<sup>*</sup></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td>(0.158)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">surface_ha</td>
+<td>0.00000<sup>***</sup></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td>(0.00000)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">couv_foret_2000</td>
+<td>-0.001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td>(0.003)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">altitude</td>
+<td>0.0001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td>(0.0002)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">indice_accidente</td>
+<td>-0.009</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td>(0.017)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dist_ville</td>
+<td>-0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td>(0.001)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Constant</td>
+<td>0.795<sup>***</sup></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td>(0.228)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td colspan="2" style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Observations</td>
+<td>78</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">R<sup>2</sup></td>
+<td>0.156</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Adjusted R<sup>2</sup></td>
+<td>0.084</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual Std. Error</td>
+<td>0.689 (df = 71)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F Statistic</td>
+<td>2.184<sup>*</sup> (df = 6; 71)</td>
+</tr>
+<tr class="odd">
+<td colspan="2" style="border-bottom: 1px solid black"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Note:</em></td>
+<td style="text-align: right;"><sup>*</sup>p&lt;0.1; <sup>**</sup>p&lt;0.05; <sup>***</sup>p&lt;0.01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="exercices" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="exercices"><span class="header-section-number">8.5</span> Exercices</h2>
+<section id="exercice-simple" class="level3" data-number="8.5.1">
+<h3 data-number="8.5.1" class="anchored" data-anchor-id="exercice-simple"><span class="header-section-number">8.5.1</span> Exercice simple</h3>
+<p>Analysez, interprétez et critiquez les résultats ci-dessus.</p>
+</section>
+<section id="exercice-intermédiaire" class="level3" data-number="8.5.2">
+<h3 data-number="8.5.2" class="anchored" data-anchor-id="exercice-intermédiaire"><span class="header-section-number">8.5.2</span> Exercice intermédiaire</h3>
+<p>Ajoutez des variables d’intérêt et modifiez les paramètres de la fonction de matching.</p>
+</section>
+<section id="exercice-avancé" class="level3" data-number="8.5.3">
+<h3 data-number="8.5.3" class="anchored" data-anchor-id="exercice-avancé"><span class="header-section-number">8.5.3</span> Exercice avancé</h3>
+<p>Réalisez une analyse analogue avec les données de feux. Rédigez une analyse interprétative.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
