@@ -4,12 +4,12 @@ library(aws.s3)
 library(purrr)
 
 # # 
-aws.s3::put_object(
-  file = "data/AP_Vahatra_mapme.rds",
-  object = "diffusion/mapme_impact_training/data/AP_Vahatra_mapme.rds",
-  bucket = "fbedecarrats",
-  region = "",
-  multipart = TRUE)
+# aws.s3::put_object(
+#   file = "data/AP_Vahatra_mapme.rds",
+#   object = "diffusion/mapme_impact_training/data/AP_Vahatra_mapme.rds",
+#   bucket = "fbedecarrats",
+#   region = "",
+#   multipart = TRUE)
 
 # A function to put data from local machine to S3
 put_to_s3 <- function(from, to) {
@@ -46,4 +46,7 @@ my_files_s3 <- get_bucket_df(bucket = "fbedecarrats",
                              region = "") %>%
   pluck("Key")
 
+my_files_dest <- str_remove(my_files_s3, "diffusion/mapme_impact_training/")
+
 setdiff(my_files_dest, my_files_s3)
+map2(my_files_s3, my_files_dest, get_from_s3)

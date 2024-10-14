@@ -14,7 +14,7 @@ On souhaite définir une stratégie empirique pour évaluer une politique publiq
 2. Quelles variables prendre en compte ? (Quelles colonnes dans mon tableau ?)
 3. Comment constituer une comparaison crédible ? (Quelle méthode d'analyse et quelles spécifications ?)
 
-On se focalise souvent sur les questions 2. et 3, mais la question 1. est souvent considérée comme évidente. On se rend pourtant souvent compte que cette question 1. suscite beaucoup de confusion quand on apprend l'économétrie. 
+On se focalise souvent sur les questions 2. et 3, mais la question 1. est souvent considérée comme évidente. Cette question 1. suscite pourtant beaucoup de confusion quand on apprend l'économétrie. 
 
 Nous allons illuster cette question avec le cas de la conservation. Typiquement, les évaluations de l'impact des politiques de conservation prennent habituellement comme référence (comme ligne du tableau) : 
 
@@ -22,7 +22,6 @@ Nous allons illuster cette question avec le cas de la conservation. Typiquement,
 - Des unités administratives, comme des communes, cf. []
 - Des zones géographiques d'une échelle assez fine (par exemple, 1 km2), cf. par exemple Wolf et al. []
 - Des pixels à l'échelle la plus fine où ils sont disponible, généralement en effectuant un tirage alétaoire, cf. par exemple Devenish et al. []
-
 
 Une approche courante consiste à diviser le territoires en mailles, carrées ou en forme d'alvéoles d'abeilles (hexagones), et à calculer des indicateurs pour chacune de ces mailles.
 
@@ -40,13 +39,12 @@ library(geodata)
 contour_mada <- gadm(country = "Madagascar", resolution = 1, level = 0,
                      path = "data") %>%
   st_as_sf() %>%
-  st_transform("EPSG:29739")
+  st_transform("EPSG:29739") # On utilise la projecton officielle pour Mada
   
   # Création d'un maillage du territoire émergé --------------------------------
   
   # On crée un cadre autour des frontières nationales
 cadre_autour_mada = st_as_sf(st_as_sfc(st_bbox(contour_mada))) %>%
-#  st_transform("EPSG:29739")
   st_make_valid()
 
 # Surface des hexagones en km2
@@ -60,7 +58,6 @@ grille_mada <- st_make_grid(x = cadre_autour_mada,
                             square = FALSE) 
 # On découpe la grille pour ne garder que les terres émergées
 cellules_emergees <- contour_mada %>%
-#  st_transform("EPSG:29739") %>%
   st_intersects(grille_mada) %>%
   unlist()
 grille_mada <- grille_mada[sort(cellules_emergees)] %>%
@@ -73,7 +70,7 @@ Le maillage produit est trop fin pour être visible à l'échelle du pays, mais 
 ## Carte de droite : zoom sur une zone spécifique-----------------------------
 # On crée une boîte de 100km autour de Maroantsetra
 zoom_boite <- st_point(c(49.74229,-15.43487)) %>% # Coordonnées de Maroantsetra
-  st_sfc(crs = "EPSG:4326") %>% # On précise que c'est du GPS
+  st_sfc(crs = "EPSG:4326") %>% # On précise que c'est du GPS initalement
   st_transform(crs = "EPSG:29739") %>% # On passe en projeté
   st_buffer(dist = 50000) %>% # On crée un cercle de 50km de rayon
   st_make_grid(n = 1) 
@@ -101,53 +98,32 @@ if (file.exists("data/grille_mada_donnees_raster.rds")) {
 } else {
   
   # Traitement des données satellitaires avec {mapme.bidiversity}---------------
+  
   # Définir le répertoire de sortie
-  mapme_options(outdir = "data/mapme"
+  mapme_options(outdir = "data/mapme")
   
-  # Acquisition des données satellitaires requises (rasters) ------------------- 
-  # Données d'accessibilité de Nelson et al. (2018)
+  # Acquisition des données satellitaires requises (rasters)
+  
   grille_mada <-  get_resources(x = grille_mada, 
-                                get_nelson_et_al(ranges = "5k_110mio"))
-  Données sur le couvert forestier de Global Forest Watch
-  grille_mada <- get_resources(x = grille_mada,
-                               resources = c("gfw_treecover", "gfw_lossyear",
-                                             "gfw_emissions"))
-  # Modèle numérique de terrain SRTM de la NASA
-  grille_mada <- get_resources(x = grille_mada, resource = "nasa_srtm")
-  # Données de feux
-  grille_mada <- get_resources(x = grille_mada, resource = "nasa_firms",
-                               instrument = "MODIS")
+                                get_nelson_et_al(ranges = "5k_110mio"),
+                                get_gfw_treecover(),
+                                get_gfw_lossyear(),
+                                get_nasa_srtm(),
+                                get_worldpop(),
+                                get_mcd64a1())
   
-  grille_mada <- get_resources(x = grille_mada, resource = "worldpop")
-  
-  # Calcul des indicateurs -----------------------------------------------------
-  
-  # Indicateurs d'accessibilité
+  # Calcul des indicateurs
+
   grille_mada <- calc_indicators(x = grille_mada,
-                                 "traveltime",  stats_accessibility = "mean",
-                                 engine = "extract")
-  # Indicateurs de sols
-  
-  grille_mada <- calc_indicators(x = grille_mada,
-                                 "soilproperties", stats_soil = "mean", 
-                                 engine = "extract")
- 
-   # Indicateurs de couvert forestier
-  grille_mada <- calc_indicators(x = grille_mada,
-                                 indicators = "treecover_area_and_emissions", 
-                                 min_cover = 30, min_size = 1)
-  # Indicateurs de relief de terrain
-  grille_mada <- calc_indicators(x = grille_mada,
-                               indicators = c("tri", "elevation"),
-                               stats_tri = "mean", stats_elevation = "mean")
-  # Indicateurs d'incendies
-  grille_mada <- calc_indicators(x = grille_mada,
-                                 "active_fire_counts")
-  grille_mada <- calc_indicators(x = grille_mada,
-                                 "active_fire_properties")
+                                 calc_traveltime(),
+                                 calc_population_count(),
+                                 calc_slope(),
+                                 calc_elevation(),
+                                 calc_treecover_area(),
+                                 calc_burned_area())
   
   # Sauvegarde du résultat
-  save(grille_mada, file = "data_s3/grille_mada_donnees_raster.rds")
+  save(grille_mada, file = "data/grille_mada_mapme.rds")
 }
 
 # Assemblage des deux cartes ---------------------------------------------------
