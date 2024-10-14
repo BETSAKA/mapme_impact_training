@@ -35,6 +35,7 @@ library(tmap)
 library(sf)
 library(mapme.biodiversity)
 library(geodata)
+library(terra)
 
 contour_mada <- gadm(country = "Madagascar", resolution = 1, level = 0,
                      path = "data") %>%
@@ -90,27 +91,43 @@ tm_shape(grille_zoom) +
 On va ensuite utiliser [le package mapme.biodiversity](https://mapme-initiative.github.io/mapme.biodiversity/index.html) pour calculer, pour chaque hexagones, une série d'indicateurs : temps de parcours jusqu'à la ville (définie comme toute localité de 5000 habitants) la plus proche en 2015, teneur du sol en argile et couvert forestier par année).
 
 ``` {r}
-#| eval: false
 
-
-if (file.exists("data/grille_mada_donnees_raster.rds")) {
-  load("data/grille_mada_donnees_raster.rds")
+if (file.exists("data/grille_mada_mapme.rds")) {
+  load("data/grille_mada_mapme.rds")
 } else {
   
   # Traitement des données satellitaires avec {mapme.bidiversity}---------------
-  
-  # Définir le répertoire de sortie
-  mapme_options(outdir = "data/mapme")
+  my_outdir <- "/vsis3/fbedecarrats/diffusion/mapme_impact_training/data/mapme"
+  # # Create the GDAL config file
+  # gdal_config_path <- "~/.gdal_config"
+  # writeLines(c(
+  #   "[.mapme-data]",
+  #   paste0("path=", my_outdir), 
+  #   paste0("AWS_SECRET_ACCESS_KEY=", Sys.getenv("AWS_SECRET_ACCESS_KEY")),
+  #   paste0("AWS_ACCESS_KEY_ID=", Sys.getenv("AWS_ACCESS_KEY_ID"))), 
+  #   gdal_config_path)
+  # 
+  # # Check and append GDAL_CONFIG_FILE to .Renviron if not already present
+  # renviron_path <- "~/.Renviron"
+  # gdal_config_line <- paste0("GDAL_CONFIG_FILE=", gdal_config_path)
+  # if (file.exists(renviron_path)) {
+  #   renviron_content <- readLines(renviron_path)
+  #   if (!any(grepl(gdal_config_line, renviron_content))) {
+  #     write(gdal_config_line, renviron_path, append = TRUE)
+  #   }
+  # } else {
+  #   write(gdal_config_line, renviron_path)
+  # }
+    # Définir le répertoire de sortie
+  mapme_options(outdir = my_outdir)
   
   # Acquisition des données satellitaires requises (rasters)
-  
   grille_mada <-  get_resources(x = grille_mada, 
                                 get_nelson_et_al(ranges = "5k_110mio"),
                                 get_gfw_treecover(),
                                 get_gfw_lossyear(),
                                 get_nasa_srtm(),
-                                get_worldpop(),
-                                get_mcd64a1())
+                                get_worldpop())
   
   # Calcul des indicateurs
 
@@ -119,8 +136,7 @@ if (file.exists("data/grille_mada_donnees_raster.rds")) {
                                  calc_population_count(),
                                  calc_slope(),
                                  calc_elevation(),
-                                 calc_treecover_area(),
-                                 calc_burned_area())
+                                 calc_treecover_area())
   
   # Sauvegarde du résultat
   save(grille_mada, file = "data/grille_mada_mapme.rds")
