@@ -23,7 +23,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
     -   Suivi, évaluations classiques et d’impact : liens et différences
     -   Corrélation vs causalité : théorie des évaluations d’impact
 
-    Discussion/questions *(30 minutes)*
+    Discussion/questions (*30 minutes*)
 
     -   Illustrations autour de cas concrets
 
@@ -38,16 +38,16 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
     -   Cas d'application et avantages-inconvénients de chacune\
         *Durée :*
 
-    Discussion/questions *(30 minutes)*
+    Discussion/questions (*30 minutes*)
 
     -   Focus sur les méthodes qui ne seront pas approfondies\
         *Durée :*
 
 -   **14h45 - 15h** : Pause
 
--   **15h - 17h** : Étude d’articles : cadrage *(30 minutes)*
+-   **15h30 - 17h** : Étude d’articles : cadrage *(30 minutes)*
 
-    Discussion/questions (*90 minutes)*
+    Discussion/questions *(60 minutes)*
 
     -   Formation des groupes
     -   Identification des articles
@@ -89,7 +89,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
 -   **12h - 13h30** : Pause déjeuner
 
--   **13h30 - 15h** : Tables (gt) et graphiques (ggplot2) *(75 minutes)*
+-   **13h30 - 15h** : Tables (gt) et graphiques (ggplot2) *(90 minutes)*
 
 -   **15h - 15h30** : Pause
 

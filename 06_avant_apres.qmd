@@ -95,4 +95,20 @@ gt(moy_defor) %>%
 
 D'après le tableau ci-dessus, quelles conclusions pouvons-nous tirer ? 
 
+Voici une vue des valeurs 0 chaque année.
+
+```{r}
+sequence_AP %>%
+  st_drop_geometry() %>%
+  filter(an_val_crea > -5 & an_val_crea < 5) %>%
+  group_by(an_val_crea) %>%
+  summarise(defor_moy = mean(tx_defor, na.rm = TRUE)) %>%
+  ggplot(aes(x = an_val_crea, y = defor_moy)) +
+  geom_point() +
+  geom_vline(xintercept = 0, col = "blue") +
+  scale_y_continuous(labels = scales::label_percent()) +
+  xlab("Avant création > Année de création > Après création") +
+  ylab("Taux moyen de déforestation")
+```
+
 > Exercice:  Quelles analyses pourraient être menées pour compléter ces premiers résultats ?
