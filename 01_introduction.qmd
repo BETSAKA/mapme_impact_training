@@ -3,7 +3,7 @@
 ## Cadrage général pour les méthodes d'évaluation
 
 ```{=html}
-<iframe src="/slides/fr/Intro_generale.pdf" width="100%" height="400px"></iframe>
+<iframe src="/slides/fr/Jour 1_Introduction_Fondamentaux.pdf" width="100%" height="400px"></iframe>
 ```
 
 [Cliquer ici pour télécharger la présentation](/slides/fr/Intro_generale.pdf)

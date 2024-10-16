@@ -1,39 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://betsaka.github.io/impact_training_mapme/04_mapme_biodiversity.html</loc>
-    <lastmod>2024-10-10T20:14:22.224Z</lastmod>
-  </url>
-  <url>
-    <loc>https://betsaka.github.io/impact_training_mapme/05_experimentations_aleatoires.html</loc>
-    <lastmod>2024-10-12T17:42:01.072Z</lastmod>
-  </url>
-  <url>
-    <loc>https://betsaka.github.io/impact_training_mapme/index.html</loc>
-    <lastmod>2024-10-14T06:20:45.527Z</lastmod>
-  </url>
-  <url>
-    <loc>https://betsaka.github.io/impact_training_mapme/06_avant_apres.html</loc>
-    <lastmod>2024-10-12T09:23:10.543Z</lastmod>
-  </url>
-  <url>
-    <loc>https://betsaka.github.io/impact_training_mapme/07_unites_analyse.html</loc>
-    <lastmod>2024-10-11T08:47:10.140Z</lastmod>
-  </url>
-  <url>
-    <loc>https://betsaka.github.io/impact_training_mapme/08_appariement.html</loc>
-    <lastmod>2024-10-14T09:36:31.650Z</lastmod>
-  </url>
-  <url>
-    <loc>https://betsaka.github.io/impact_training_mapme/09_double_difference.html</loc>
-    <lastmod>2024-10-14T06:20:45.047Z</lastmod>
-  </url>
-  <url>
-    <loc>https://betsaka.github.io/impact_training_mapme/10_synthese.html</loc>
-    <lastmod>2024-10-11T08:47:10.144Z</lastmod>
-  </url>
-  <url>
-    <loc>https://betsaka.github.io/impact_training_mapme/11_references.html</loc>
-    <lastmod>2024-10-11T08:47:10.144Z</lastmod>
+    <loc>https://betsaka.github.io/impact_training_mapme/01_introduction.html</loc>
+    <lastmod>2024-10-16T16:48:22.388Z</lastmod>
   </url>
 </urlset>
