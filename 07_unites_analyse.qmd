@@ -36,6 +36,9 @@ library(sf)
 library(mapme.biodiversity)
 library(geodata)
 library(terra)
+library(future)
+library(tictoc)
+library(progressr)
 
 contour_mada <- gadm(country = "Madagascar", resolution = 1, level = 0,
                      path = "data") %>%
@@ -98,27 +101,8 @@ if (file.exists("data/grille_mada_mapme.rds")) {
   
   # Traitement des données satellitaires avec {mapme.bidiversity}---------------
   my_outdir <- "/vsis3/fbedecarrats/diffusion/mapme_impact_training/data/mapme"
-  # # Create the GDAL config file
-  # gdal_config_path <- "~/.gdal_config"
-  # writeLines(c(
-  #   "[.mapme-data]",
-  #   paste0("path=", my_outdir), 
-  #   paste0("AWS_SECRET_ACCESS_KEY=", Sys.getenv("AWS_SECRET_ACCESS_KEY")),
-  #   paste0("AWS_ACCESS_KEY_ID=", Sys.getenv("AWS_ACCESS_KEY_ID"))), 
-  #   gdal_config_path)
-  # 
-  # # Check and append GDAL_CONFIG_FILE to .Renviron if not already present
-  # renviron_path <- "~/.Renviron"
-  # gdal_config_line <- paste0("GDAL_CONFIG_FILE=", gdal_config_path)
-  # if (file.exists(renviron_path)) {
-  #   renviron_content <- readLines(renviron_path)
-  #   if (!any(grepl(gdal_config_line, renviron_content))) {
-  #     write(gdal_config_line, renviron_path, append = TRUE)
-  #   }
-  # } else {
-  #   write(gdal_config_line, renviron_path)
-  # }
-    # Définir le répertoire de sortie
+
+  # Définir le répertoire de sortie
   mapme_options(outdir = my_outdir)
   
   # Acquisition des données satellitaires requises (rasters)
@@ -126,25 +110,53 @@ if (file.exists("data/grille_mada_mapme.rds")) {
                                 get_nelson_et_al(ranges = "5k_110mio"),
                                 get_gfw_treecover(),
                                 get_gfw_lossyear(),
-                                get_nasa_srtm(),
-                                get_worldpop())
+                                get_worldpop(),
+                                get_nasa_srtm())
   
+  plan(sequential)
   # Calcul des indicateurs
-
-  grille_mada <- calc_indicators(x = grille_mada,
-                                 calc_traveltime(),
-                                 calc_population_count(),
-                                 calc_slope(),
-                                 calc_elevation(),
-                                 calc_treecover_area())
+  plan(cluster, workers = 8)
+  
+  tic()
+  with_progress({
+    grille_mada <- calc_indicators(x = grille_mada,
+                                   calc_traveltime())
+  })
+  toc() # 2092.765 sec elapsed
+  tic()
+  with_progress({
+    grille_mada <- calc_indicators(x = grille_mada,
+                                   calc_population_count())
+  })
+  toc() # 2411.423 sec elapsed
+  tic()
+  with_progress({
+    grille_mada <- calc_indicators(x = grille_mada,
+                                   calc_treecover_area())
+  })
+  toc() # 2851.659 sec elapsed
+  tic()
+  with_progress({
+    grille_mada <- calc_indicators(x = grille_mada,
+                                   calc_slope())
+  })
+  toc()
+  tic()
+  with_progress({
+    grille_mada <- calc_indicators(x = grille_mada,
+                                   calc_elevation())
+  })
+  toc() 
+  plan(sequential)
   
   # Sauvegarde du résultat
-  save(grille_mada, file = "data/grille_mada_mapme.rds")
+  save(grille_mada, file = "data/grille_mada_mapme_acces_pop_forest.rds")
 }
 
-# Assemblage des deux cartes ---------------------------------------------------
-tmap_arrange(carte_grille, carte_zoom, ncol = 2) 
-
+dir.create("test")
+ mapme_options(outdir = "test")
+  contour_mada2 <-  get_resources(x = contour_mada, 
+                                get_nasa_srtm())
 ```
 
 On peut représenter sous forme de cartes et d'histogrammes les différentes valeurs des indicateurs générés à partir des données satellitaires.
