@@ -6,7 +6,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
 -   **8h - 9h30** : Présentation de l’atelier *(60 minutes)*
 
-    -   Objectif, contenu, programme
+    -   Objectif, contenu, programme, supports
     -   Méthode, exercices et constitution des groupes
     -   Formateurs et stagiaires (expérience R...)
 
