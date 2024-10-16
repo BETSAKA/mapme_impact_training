@@ -31,7 +31,6 @@ get_from_s3 <- function(from, to) {
     region = "")
 }
 
-
 # To put files
 my_files_local <- list.files("data/gadm", full.names = TRUE, recursive = TRUE)
 my_files_local
