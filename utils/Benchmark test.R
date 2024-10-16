@@ -40,6 +40,35 @@ my_s3 <- "/vsis3/fbedecarrats/diffusion/test"
 my_local <- "test"
 
 
+# En local ----------------------------------------------------------------
+
+mapme_options(outdir = my_local)
+
+plan(cluster, workers = 8)
+
+tic()
+# Acquisition des données satellitaires requises (rasters)
+with_progress({
+  grille_mada_local <-  get_resources(x = grille_mada, 
+                                      get_nelson_et_al(ranges = "5k_110mio"),
+                                      get_gfw_treecover(),
+                                      get_gfw_lossyear(),
+                                      get_nasa_srtm(),
+                                      get_worldpop())
+  toc()
+})
+# Calcul des indicateurs
+tic()
+with_progress({
+  grille_mada_local <- calc_indicators(x = grille_mada_local,
+                                       calc_traveltime(),
+                                       calc_population_count(),
+                                       calc_slope(),
+                                       calc_elevation(),
+                                       calc_treecover_area())
+})
+toc()
+plan(sequential)
 
 # With S3 storage ---------------------------------------------------------
 
@@ -72,32 +101,3 @@ with_progress({
 plan(sequential)
 
 
-# En local ----------------------------------------------------------------
-
-mapme_options(outdir = my_local)
-
-plan(cluster, workers = 8)
-
-tic()
-# Acquisition des données satellitaires requises (rasters)
-with_progress({
-  grille_mada_local <-  get_resources(x = grille_mada, 
-                                   get_nelson_et_al(ranges = "5k_110mio"),
-                                   get_gfw_treecover(),
-                                   get_gfw_lossyear(),
-                                   get_nasa_srtm(),
-                                   get_worldpop())
-  toc()
-})
-# Calcul des indicateurs
-tic()
-with_progress({
-  grille_mada_local <- calc_indicators(x = grille_mada_local,
-                                       calc_traveltime(),
-                                       calc_population_count(),
-                                       calc_slope(),
-                                       calc_elevation(),
-                                       calc_treecover_area())
-})
-toc()
-plan(sequential)
