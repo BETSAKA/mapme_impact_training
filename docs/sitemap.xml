@@ -1,7 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/index.html</loc>
+    <lastmod>2024-10-17T16:23:23.322Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/00_programme.html</loc>
+    <lastmod>2024-10-17T16:23:22.694Z</lastmod>
+  </url>
+  <url>
     <loc>https://betsaka.github.io/impact_training_mapme/01_introduction.html</loc>
-    <lastmod>2024-10-16T16:48:22.388Z</lastmod>
+    <lastmod>2024-10-17T16:23:22.694Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/02_bases_R.html</loc>
+    <lastmod>2024-10-17T16:23:22.702Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/03_geodata.html</loc>
+    <lastmod>2024-10-17T16:23:23.142Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/04_mapme_biodiversity.html</loc>
+    <lastmod>2024-10-17T16:23:23.178Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/05_experimentations_aleatoires.html</loc>
+    <lastmod>2024-10-17T16:23:23.178Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/06_avant_apres.html</loc>
+    <lastmod>2024-10-17T16:23:23.178Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/08_appariement.html</loc>
+    <lastmod>2024-10-17T19:48:54.406Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/09_double_difference.html</loc>
+    <lastmod>2024-10-17T16:23:23.182Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/10_synthese.html</loc>
+    <lastmod>2024-10-17T16:23:23.182Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/11_references.html</loc>
+    <lastmod>2024-10-17T16:23:23.182Z</lastmod>
+  </url>
+  <url>
+    <loc>https://betsaka.github.io/impact_training_mapme/07_unites_analyse.html</loc>
+    <lastmod>2024-10-17T20:04:59.834Z</lastmod>
   </url>
 </urlset>

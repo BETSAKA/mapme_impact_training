@@ -93,7 +93,7 @@ tm_shape(grille_zoom) +
 
 On va ensuite utiliser [le package mapme.biodiversity](https://mapme-initiative.github.io/mapme.biodiversity/index.html) pour calculer, pour chaque hexagones, une série d'indicateurs : temps de parcours jusqu'à la ville (définie comme toute localité de 5000 habitants) la plus proche en 2015, teneur du sol en argile et couvert forestier par année).
 
-``` {r}
+``` {r,eval=FALSE}
 
 if (file.exists("data/grille_mada_mapme.rds")) {
   load("data/grille_mada_mapme.rds")
@@ -161,7 +161,7 @@ dir.create("test")
 
 On peut représenter sous forme de cartes et d'histogrammes les différentes valeurs des indicateurs générés à partir des données satellitaires.
 
-```{r Synthèse données satellitaires, fig.fullwidth = TRUE}
+```{r Synthèse données satellitaires, fig.fullwidth = TRUE, eval=FALSE}
 if (file.exists("data/carte_mailles.rds")) {
   load("data/carte_mailles.rds")
 } else {
@@ -273,7 +273,7 @@ Les cartes et histogrammes ci-dessus illustrent la distribution des variables sp
 
 On peut maintenant associer les données d'aires protégées aux hexagones afin de les croiser avec les indicateurs issus des données satellitaires déjà calculés pour ces hexagones.
 
-```{r Jointure aires protégées et données satellitaires}
+```{r Jointure aires protégées et données satellitaires, eval=FALSE}
 if (file.exists("data/grille_mada_AP.rds")) {
   load("data/grille_mada_AP.rds")
 } else {

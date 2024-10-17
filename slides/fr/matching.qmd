@@ -80,7 +80,9 @@ On va chercher le "jumeau" grâce à des caractéristiques que l’on peut mesur
 **Hypothèses sous-jacentes :**
 
 - L'assignation à un programme est aléatoire lorsque les deux unités ont les mêmes caractéristiques observables  
-  $\Rightarrow$ [Indépendance conditionnelle (aux caractéristiques observables]{style="color:red;"}
+  $\Rightarrow$ [Indépendance conditionnelle (aux caractéristiques observables)]{style="color:red;"}
+
+$$ (Y 1 ,Y 0 ) ⊥ T|X $$
 
 - Il doit y avoir suffisamment d'unités traitées qui ressemblent à des unités contrôles  
   $\Rightarrow$ [Support commun]{style="color:red;"}
@@ -137,7 +139,9 @@ $\Rightarrow$ Pour chaque valeur de $X$, on suppose qu’il existe des unités q
 
 **Méthodes d’appariement**
 
-On va chercher une unité $\Rightarrow$ Pour évaluer l’effet moyen sur les traités (ATE), cela revient à [comparer]{style="color:blue;"} le résultat $Y1$ de chaque unité traitée avec le résultat $Y0$ de l’unité non traitée ayant exactement les mêmes caractéristiques observables.
+our évaluer l’effet moyen sur les traités (ATE), cela revient à [comparer]{style="color:blue;"} le résultat $Y1$ de chaque unité traitée avec le résultat $Y0$ de l’unité non traitée ayant exactement les mêmes caractéristiques observables.
+
+Cela revient en symétrie à exclure de l'analyse les unités qui ne sont pas comparables.
 
 ## Le principe 
 
@@ -185,6 +189,8 @@ Il y a plusieurs manières de calculer la distance entre deux unités :
 
 - **[Distance de Mahalanobis]{style="color:blue;"}** : accorde un poids différent aux caractéristiques observables $X$.
 
+- **[Score de propension]{style="color:blue;"}** : une seule mesure de proabilité de traitement (expliqué plus loin)
+
 ## Variantes du plus proche voisin 
 
 **Les plus proches voisins**
@@ -207,7 +213,7 @@ L’appariement peut être fait :
 
 . . . 
 
-- Un large échantillon de contrôle
+- Nécessite un large échantillon de contrôle
 - L’estimation pourra être sensible à l’ordre dans lequel l’appariement est effectué
 
 ## Limites du plus proche voisin 
@@ -385,9 +391,35 @@ ggplot(data, aes(x = propensity_score, fill = group, color = group)) +
 
 ### Méthode du min/max
 
-- Pour estimer l’ATT, Dehejia et Wahba (1999) éliminent les unités non traitées ayant un score inférieur au minimum observé sur les unités traitées, c.à.d. *"Jamais traités"*
+- Pour estimer l’ATT, Dehejia et Wahba (1999) proposent d'éliminer :
 
-- Pour estimer l’ATE, il faut également éliminer les unités traitées ayant un score supérieur au maximum observé pour les unités non traitées, c.à.d *"always treated"*
+    1. les unités non traitées ayant un score inférieur au minimum observé sur les unités traitées, c.à.d. *"Jamais traités"*
+    2. les unités traitées ayant un score supérieur au maximum observé pour les unités non traitées, c.à.d *"always treated"*
+    
+**Attention** : Ce qui est alors estimé, ce n'est plus un *ATE* (average treatment effect), ni même un *ATT* (average treatement effect on the treated) mais un *ATM* (average teatment effect on the matched observations)
+
+## Le Coarsened Exact Matching (CEM)
+
+CEM : appariement sur variables regroupées en classes (traduction approximative).
+
+Une approche qui se passe de régression linéaires ou de mesures de distance.
+
+
+##
+
+![](figs/CEM_01.png)
+
+##
+
+![](figs/CEM_02.png)
+
+##
+
+![](figs/CEM_03.png)
+
+##
+
+![](figs/CEM_04.png)
 
 ## Quelles variables de conditionnement/contrôle ? 
 
