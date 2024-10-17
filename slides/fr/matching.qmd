@@ -1,7 +1,7 @@
 ---
 title: "Méthodes d'appariement"
 subtitle: "Atelier Mapme : Evaluation d'impact sur données spatiales"
-author: "Florent Bédécarrats"
+author: "Melvin Wong, Florent Bédécarrats (sur une base élaborée par Jeanne de Montalembert et Marin Ferry"
 date: "Octobre 2024"
 format: 
   clean-revealjs:
@@ -18,7 +18,7 @@ Est-ce que le statut d'Aire Protégée a un impact sur le couvert forestier ?
 
 C'est à dire :
 
-$$E[CF1|AP = 1] - E[CF0|AP = 0]$$
+$$E[CF1|AP = 1] - E[CF1|AP = 0]$$
 
 avec $CF1$ le couvert forestier d'une zone si c'est une AP et $CF0$ le couvert forestier s’il n’y a pas d’AP, **pour la même zone et au même moment**.
 
