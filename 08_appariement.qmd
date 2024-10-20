@@ -13,6 +13,8 @@ execute:
 
 </iframe>
 
+<a href="slides/fr/matching.html" download>Cliquer ici pour télécharger la présentation</a>.
+
 ## La question de la comparabilité des groupes
 
 On a vu dans le chapitre précédent que les comparaisons simples réalisées entre les premières et les dernières aires à avoir été formellement protégées pose problème.
