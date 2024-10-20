@@ -51,4 +51,6 @@ rsconnect/
 /.quarto/
 test/*
 
+core
+
 .nojekyll
