@@ -93,7 +93,7 @@ tm_shape(grille_zoom) +
 
 On va ensuite utiliser [le package mapme.biodiversity](https://mapme-initiative.github.io/mapme.biodiversity/index.html) pour calculer, pour chaque hexagones, une série d'indicateurs : temps de parcours jusqu'à la ville (définie comme toute localité de 5000 habitants) la plus proche en 2015, teneur du sol en argile et couvert forestier par année).
 
-``` {r,eval=FALSE}
+``` {r grille_mada}
 
 if (file.exists("data/grille_mada_mapme.rds")) {
   grille_mada <- read_rds("data/grille_mada_mapme.rds")
@@ -156,7 +156,7 @@ if (file.exists("data/grille_mada_mapme.rds")) {
 
 On peut représenter sous forme de cartes et d'histogrammes les différentes valeurs des indicateurs générés à partir des données satellitaires.
 
-```{r Synthèse données satellitaires, fig.fullwidth = TRUE, eval=FALSE}
+```{r Synthèse données satellitaires, fig.fullwidth = TRUE}
 if (file.exists("data/carte_mailles.rds")) {
   load("data/carte_mailles.rds")
 } else {
@@ -267,35 +267,41 @@ Les cartes et histogrammes ci-dessus illustrent la distribution des variables sp
 
 On peut maintenant associer les données d'aires protégées aux hexagones afin de les croiser avec les indicateurs issus des données satellitaires déjà calculés pour ces hexagones.
 
-```{r Jointure aires protégées et données satellitaires, eval=FALSE}
+```{r Jointure aires protégées et données satellitaires}
 if (file.exists("data/grille_mada_AP.rds")) {
-  load("data/grille_mada_AP.rds")
+  grille_mada_AP <- read_rds("data/grille_mada_AP.rds")
 } else {
-# Load the protected areas data
-AP_Vahatra <- st_read("data/AP_Vahatra.geojson", quiet = TRUE)
-
-# Prepare the attribute data
-AP_info <- AP_Vahatra %>%
-  st_drop_geometry() %>%
-  select(nom, an_creation, cat_iucn = cat__iucn, gestionnaire = gest_2)
-
-# Assign protected area status to hexagons
-grille_mada_AP <- grille_mada %>%
-  mutate(
-    AP_touche = map_chr(st_intersects(., AP_Vahatra), ~ pluck(AP_info$nom, .x, 1, .default = NA_character_)),
-    AP_inclus = map_chr(st_within(., AP_Vahatra), ~ pluck(AP_info$nom, .x, 1, .default = NA_character_)),
-    position_ap = case_when(
-      is.na(AP_touche) ~ "Extérieur",
-      !is.na(AP_inclus) ~ "Intérieur",
-      TRUE ~ "Frontière"
-    ),
-    ref_AP = if_else(position_ap == "Intérieur", AP_inclus, AP_touche)
-  ) %>%
-  left_join(AP_info, by = c("ref_AP" = "nom")) %>%
-  st_sf()
-
-# Save the result
-save(grille_mada_AP, file = "data/grille_mada_AP.rds")
+  # Load the protected areas data
+  AP_Vahatra <- st_read("data/AP_Vahatra.geojson", quiet = TRUE)
+  
+  # Prepare the attribute data
+  AP_info <- AP_Vahatra %>%
+    st_drop_geometry() %>%
+    select(nom, an_creation, cat_iucn, gestionnaire = gest_2)
+  
+  # Helper function to safely extract the first element or return NA
+  get_first_or_na <- function(indices, names_vector) {
+    if (length(indices) == 0) {
+      return(NA_character_)
+    }
+    names_vector[indices[1]]
+  }
+  
+  # Assign protected area status to hexagons
+  grille_mada_AP <- grille_mada %>%
+    mutate(
+      AP_touche = map_chr(st_intersects(., AP_Vahatra), get_first_or_na, AP_info$nom),
+      AP_inclus = map_chr(st_within(., AP_Vahatra), get_first_or_na, AP_info$nom),
+      position_ap = case_when(
+        is.na(AP_touche) ~ "Extérieur",
+        !is.na(AP_inclus) ~ "Intérieur",
+        TRUE ~ "Frontière"),
+      ref_AP = if_else(position_ap == "Intérieur", AP_inclus, AP_touche)) %>%
+    left_join(AP_info, by = c("ref_AP" = "nom")) %>%
+    st_sf()
+  
+  # Save the result
+  write_rds(grille_mada_AP, "data/grille_mada_AP.rds")
 }
 
 # Plot the classified map
@@ -306,7 +312,6 @@ tm_shape(grille_mada_AP) +
     main.title.position = c("center", "top"),
     main.title.size = 1,
     legend.position = c("left", "top"),
-    legend.outside = FALSE
-  )
+    legend.outside = FALSE)
 ```
 
