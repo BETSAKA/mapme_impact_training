@@ -3,10 +3,10 @@ library(stringr)
 library(aws.s3)
 library(purrr)
 
-# # 
+#
 # aws.s3::put_object(
-#   file = "data/AP_Vahatra_mapme.rds",
-#   object = "diffusion/mapme_impact_training/data/AP_Vahatra_mapme.rds",
+#   file = "data/grille_mada_mapme.rds",
+#   object = "diffusion/mapme_impact_training/data/grille_mada_mapme.rds",
 #   bucket = "fbedecarrats",
 #   region = "",
 #   multipart = TRUE)

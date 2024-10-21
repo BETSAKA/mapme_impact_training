@@ -49,13 +49,13 @@ Vahatra_defor_noNA <- AP_Vahatra %>%
   mutate(surface_ha = as.numeric(st_area(AP_Vahatra)) / 10000, 
          couv_foret_2000 = `treecover_area_2000-01-01_treecover_ha` / surface_ha * 100,
          altitude = `elevation_2000-02-01_elevation_mean_m`,
-         indice_accidente = `slope_2000-02-01_slope_mean_degrees`,
+         pente = `slope_2000-02-01_slope_mean_degrees`,
          dist_ville = `traveltime_2015-01-01_5k_110mio_traveltime_mean_minutes`,
          traitement = ifelse(year(date_creation) < 2015, 1, 0),
          taux_deforestation_2000_2014 = 
            -((`treecover_area_2014-01-01_treecover_ha` / 
               `treecover_area_2000-01-01_treecover_ha`)^(1/14) - 1) * 100) %>%
-  filter(!is.na(couv_foret_2000), !is.na(dist_ville), !is.na(altitude), !is.na(indice_accidente))
+  filter(!is.na(couv_foret_2000), !is.na(dist_ville), !is.na(altitude), !is.na(pente))
 
 summary(Vahatra_defor_noNA)
 
@@ -85,7 +85,7 @@ Cette spécification peut se représenter selon l'équation suivante qui représ
 pscor <- traitement ~  surface_ha + 
                        couv_foret_2000 + 
                        altitude +
-                       indice_accidente + 
+                       pente + 
                        dist_ville
 ```
 
@@ -157,7 +157,7 @@ estimp <- taux_deforestation_2000_2014 ~
                           surface_ha + 
                           couv_foret_2000 + 
                           altitude +
-                          indice_accidente + 
+                          pente + 
                           dist_ville
 ```
 
