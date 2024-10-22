@@ -2,8 +2,6 @@
 output: html_document
 editor_options: 
   chunk_output_type: console
-execute:
-  eval: false
 ---
 
 # Méthodes d'appariement
@@ -195,4 +193,127 @@ Ajoutez des variables d'intérêt et modifiez les paramètres de la fonction de 
 
 Réalisez une analyse analogue avec les données de feux. Rédigez une analyse interprétative.
 
+## Application sur les données en mailles
 
+L'exercice ci-dessous consiste à réaliser un appariement sur des données d'une taille relativement grande. Cet exercice comporte des limites, car on dispose d'un nombre limité d'observations à comparer.
+
+Une approche plus appropriée consiste à utiliser le maillage du territoire effectué dans la section @sec-mailles pour comparer des parcelles d'aires passées sous protection pendant la période d'étude (2000-2023) à des zones d'ayant jamais été protégées.
+
+Les données ne peuvent pas contenir de données manquantes sur les variables d'appariement, donc on les écarte.
+
+```{r}
+library(tidyverse)
+library(mapme.biodiversity)
+library(MatchIt)
+library(stargazer)
+library(sf)
+library(cobalt)
+library(tmap)
+library(htmltools) # Pour avoir de plus jolies tables
+library(geodata) # Pour les frontières de Madagascar
+
+# Taille des titres des cartes
+taille_titres_cartes = 1
+
+grille_mada_summary_AP <- read_rds("data/grille_mada_summary_AP.rds")
+
+# On référence le nom des variables qui vont servir à l'analyse
+variables_analyse <- c("assetid",
+                       "traitement",
+                       "couv_foret_2000",
+                       "pop_km2",
+                       "altitude",
+                       "pente",
+                       "dist_ville",
+                       "taux_deforestation_2000_2023")
+
+# On renomme le ficher 'df' (dataframe) : plus concis dans les commandes ensuite
+df <- grille_mada_summary_AP %>%
+  # On supprime toutes les lignes pour lesquelles au moins 1 valeur variable 
+  # est manquante parmi les variables d'analyse
+  mutate(traitement = position_ap == "Intérieur") %>% 
+  drop_na(any_of(variables_analyse))
+
+```
+
+On analyse maintenant le score de propension.
+
+```{r, output = FALSE}
+# Get propensity scores
+glm_out <- glm(traitement ~ couv_foret_2000 + 
+                           pop_km2 + 
+                           altitude + 
+                           pente + 
+                           dist_ville,  
+               family = binomial(link = "probit"),
+               data = df)
+
+cellmatch_out1 <- stargazer(glm_out,
+                            summary = TRUE,
+                            type = "html",
+                            title = "Score de propension")
+```
+```{r, echo = FALSE}
+out_html3 <- browsable(HTML(paste(cellmatch_out1, collapse = "")))
+browsable(div(style = "width: 300px;", out_html3))
+```
+
+> Exercice : interpréter le résultat du score de propension. 
+
+
+```{r}
+m_out <- matchit(traitement ~ couv_foret_2000 + 
+                           pop_km2 + 
+                           altitude + 
+                           pente + 
+                           dist_ville,
+                 data = df,
+                 method = "nearest",
+                 replace = TRUE,
+                 distance = "glm", 
+                 discard = "both", # common support: drop units from both groups 
+                 link = "probit")
+
+print(m_out)
+# print(summary(m_out, un = FALSE))
+bal_table <- bal.tab(m_out, un = TRUE)
+print(bal_table)
+m_data <- match.data(m_out) %>%
+  st_sf()
+
+contour_mada <- gadm("Madagascar", level = 0, path = "data") %>% st_as_sf()
+# On visualise les données appareillées
+tm_shape(contour_mada) +
+  tm_borders() +
+  tm_shape(m_data) +
+  tm_fill(col = "traitement", palette = "Set1", title = "Groupes d'appariement",
+          labels = c("Contrôle", "Traitement")) +
+  tm_layout(legend.outside = TRUE,
+            main.title = "Localisation des groupes de traitement et de contrôle",
+            main.title.position = c("center", "top"),
+            main.title.size = 1)
+```
+
+> Exercice: Réaliser des tests d'équilibre
+
+
+On réalise la régression.
+
+```{r, output = FALSE}
+modele <- lm(formula = taux_deforestation_2000_2023 ~
+               traitement +
+               couv_foret_2000 + 
+               pop_km2 + 
+               altitude + 
+               pente + 
+               dist_ville,
+             data = m_data,
+             weights = weights)
+cellmatch_out2 <- stargazer(modele, type = "html") 
+```
+```{r, echo = FALSE}
+out_html4 <- browsable(HTML(paste(cellmatch_out2, collapse = "")))
+browsable(div(style = "width: 300px;", out_html4))
+```
+
+> Exercice : interpréter le résultat

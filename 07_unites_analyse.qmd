@@ -4,7 +4,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Clarification sur les unités d'analyse
+# Clarification sur les unités d'analyse {#sec-mailles}
 
 ## Quelles unités d'analyse
 
@@ -156,10 +156,8 @@ if (file.exists("data/grille_mada_mapme.rds")) {
 
 On peut représenter sous forme de cartes et d'histogrammes les différentes valeurs des indicateurs générés à partir des données satellitaires.
 
-```{r Synthèse données satellitaires, fig.fullwidth = TRUE}
-if (file.exists("data/carte_mailles.rds")) {
-  load("data/carte_mailles.rds")
-} else {
+```{r}
+if (!file.exists("data/carte_mailles.png")) {
   grille_mada_summary <- grille_mada %>%
     portfolio_long() %>%
     filter(!(variable == "treecover" & year(datetime) %in% 2001:2022)) %>%
@@ -176,6 +174,7 @@ if (file.exists("data/carte_mailles.rds")) {
              -((`treecover_area_2023_treecover_ha` - 
                 `treecover_area_2000_treecover_ha`)/`treecover_area_2000_treecover_ha`) * 100) 
   
+  
   tmap_mode("plot")
   carte_acces <- tm_shape(grille_mada_summary) +
     tm_fill("dist_ville",
@@ -185,8 +184,6 @@ if (file.exists("data/carte_mailles.rds")) {
             n = 8,
             legend.hist = TRUE) +
     tm_layout(legend.outside = TRUE,
-              # legend.title.size = 0.8,
-              # legend.text.size = 0.6,
               legend.hist.width = 1,
               legend.hist.height = 1)
   
@@ -197,8 +194,6 @@ if (file.exists("data/carte_mailles.rds")) {
             n = 8,
             legend.hist = TRUE) +
     tm_layout(legend.outside = TRUE,
-              # legend.title.size = 0.8,
-              # legend.text.size = 0.6
               legend.hist.width = 1,
               legend.hist.height = 1)
   
@@ -209,8 +204,6 @@ if (file.exists("data/carte_mailles.rds")) {
             n = 8,
             legend.hist = TRUE) +
     tm_layout(legend.outside = TRUE,
-              # legend.title.size = 0.8,
-              # legend.text.size = 0.6,
               legend.hist.width = 1,
               legend.hist.height = 1)
   
@@ -221,8 +214,6 @@ if (file.exists("data/carte_mailles.rds")) {
             n = 8,
             legend.hist = TRUE) +
     tm_layout(legend.outside = TRUE,
-              # legend.title.size = 0.8,
-              # legend.text.size = 0.6,
               legend.hist.width = 1,
               legend.hist.height = 1)
   
@@ -233,8 +224,6 @@ if (file.exists("data/carte_mailles.rds")) {
             n = 8,
             legend.hist = TRUE) +
     tm_layout(legend.outside = TRUE,
-              # legend.title.size = 0.8,
-              # legend.text.size = 0.6,
               legend.hist.width = 1,
               legend.hist.height = 1)
   
@@ -245,8 +234,6 @@ if (file.exists("data/carte_mailles.rds")) {
             n = 8,
             legend.hist = TRUE) +
     tm_layout(legend.outside = TRUE,
-              # legend.title.size = 0.8,
-              # legend.text.size = 0.6,
               legend.hist.width = 1,
               legend.hist.height = 1)
   
@@ -255,31 +242,29 @@ if (file.exists("data/carte_mailles.rds")) {
                                 carte_cover, carte_loss,
                                 ncol = 2, nrow = 3)
   
-  write_rds(carte_mailles, "data/carte_mailles.rds")
+  tmap_save(carte_mailles, "data/carte_mailles.png")
 }
-
-carte_mailles
 ```
-
+![](data/carte_mailles.png)
 Les cartes et histogrammes ci-dessus illustrent la distribution des variables spatiales calculées par hexagones. 
 
 ## Croisement des données d'aires protégées et satellitaires
 
 On peut maintenant associer les données d'aires protégées aux hexagones afin de les croiser avec les indicateurs issus des données satellitaires déjà calculés pour ces hexagones.
 
-```{r Jointure aires protégées et données satellitaires}
-if (file.exists("data/grille_mada_AP.rds")) {
-  grille_mada_AP <- read_rds("data/grille_mada_AP.rds")
+```{r}
+if (file.exists("data/grille_mada_summary_AP.rds")) {
+  grille_mada_AP <- read_rds("data/grille_mada_summary_AP.rds")
 } else {
   # Load the protected areas data
   AP_Vahatra <- st_read("data/AP_Vahatra.geojson", quiet = TRUE)
   
-  # Prepare the attribute data
+  # Prépare les attributs liés aux données d'AP
   AP_info <- AP_Vahatra %>%
     st_drop_geometry() %>%
     select(nom, an_creation, cat_iucn, gestionnaire = gest_2)
   
-  # Helper function to safely extract the first element or return NA
+  # Une fonction qui extrait le premier élément ou retourne NA
   get_first_or_na <- function(indices, names_vector) {
     if (length(indices) == 0) {
       return(NA_character_)
@@ -287,8 +272,8 @@ if (file.exists("data/grille_mada_AP.rds")) {
     names_vector[indices[1]]
   }
   
-  # Assign protected area status to hexagons
-  grille_mada_AP <- grille_mada %>%
+  # On assigne le statut d'AP aux hexagones
+  grille_mada_summary_AP <- grille_mada_summary %>%
     mutate(
       AP_touche = map_chr(st_intersects(., AP_Vahatra), get_first_or_na, AP_info$nom),
       AP_inclus = map_chr(st_within(., AP_Vahatra), get_first_or_na, AP_info$nom),
@@ -300,10 +285,11 @@ if (file.exists("data/grille_mada_AP.rds")) {
     left_join(AP_info, by = c("ref_AP" = "nom")) %>%
     st_sf()
   
-  # Save the result
-  write_rds(grille_mada_AP, "data/grille_mada_AP.rds")
+  # On sauve le résultat pour s'en servir plus tard (matching)
+  write_rds(grille_mada_summary_AP, "data/grille_mada_summary_AP.rds")
 }
 
+tmap_mode("plot")
 # Plot the classified map
 tm_shape(grille_mada_AP) +
   tm_fill("position_ap", title = "par rapport aux aires protégées") +

@@ -5,8 +5,8 @@ library(purrr)
 
 #
 aws.s3::put_object(
-  file = "data/grille_mada_AP.rds",
-  object = "diffusion/mapme_impact_training/data/grille_mada_AP.rds",
+  file = "data/carte_mailles.png",
+  object = "diffusion/mapme_impact_training/data/carte_mailles.png",
   bucket = "fbedecarrats",
   region = "",
   multipart = TRUE)

@@ -7,6 +7,7 @@ format:
   clean-revealjs:
     slide-number: true
     self-contained: true
+    pdf: true
 class: small-text
 editor_options: 
   chunk_output_type: console
