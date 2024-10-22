@@ -140,7 +140,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
 -   **8h - 9h30** : Randomisation *(45 minutes)*
 
-    Questions / discussion *(15 minutes)*
+    Questions / discussion *(45 minutes)*
 
     -   Débat autour de la pertinence des RCT
     -   Défis méthodologiques et pratique de la faisabilité
@@ -148,7 +148,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
 -   **9h30 - 10h** : Pause
 
--   **10h - 12h** : Application pratique : faisons "comme si" les AP étaient créées aléatoirement *(45 minutes)*
+-   **10h - 12h** : Application pratique : faisons "comme si" les AP étaient créées aléatoirement *(2 heures)*
 
     -   Analyse de données
     -   Interprétations
@@ -171,13 +171,7 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
 -   **8h - 9h30** : Différentes unités/échelles d'analyse (AP, cellules, pixels...) *(30 minutes)*
 
-    Questions / discussion *(15 minutes)*
-
-    -   Débat autour de la pertinence des RCT
-    -   Défis méthodologiques et pratique de la faisabilité
-    -   Questions éthiques
-
-    -   Reprise du maillage travaillé en fin de J4 *(45 minutes)*
+    Questions / discussion / mise en pratique *(90 minutes)*
 
 -   **9h30 - 10h** : Pause
 
@@ -193,10 +187,10 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
 -   **13h30 - 15h** : Présentation du package MatchIt *(30 minutes)*
 
-    -   Exercices d'application aux aires protégées
+    -   Exercices d'application aux aires protégées *(60 minutes)*
     -   Spécification des variables
     -   Algorithmes d'appariement
-    -   Paramètres associés *(60 minutes)*
+    -   Paramètres associés 
 
 -   **15h - 15h30** : Pause
 
@@ -218,20 +212,15 @@ Voici une proposition de programme sur sept jours, visant une progression pédag
 
 -   **10h - 12h** : Package `did` *(30 minutes)*
 
-    -   Mise en application
+    -   Mise en application *(90 minutes)*
     -   Utilisation sur 2 périodes
     -   Utilisation sur N périodes
-    -   Vérification des tendances de prétraitement *(30 minutes)*
+    -   Vérification des tendances de prétraitement 
 
 -   **12h - 13h30** : Pause déjeuner
 
--   **13h30 - 15h** : Synthèse et outils pratiques *(30 minutes)*
+-   **13h30 - 15h** : Synthèse et outils pratiques *(90 minutes)*
 
-    -   Exercices d'application aux aires protégées
-    -   Spécification des variables
-    -   Algorithmes d'appariement
-    -   Paramètres associés
-    -   Retour sur les méthodes pas approfondies : discontinuité de la régression, synthetic matching... *(60 minutes)*
 
 -   **15h - 15h30** : Pause
 
