@@ -18,10 +18,10 @@ On se focalise souvent sur les questions 2. et 3, mais la question 1. est souven
 
 Nous allons illuster cette question avec le cas de la conservation. Typiquement, les évaluations de l'impact des politiques de conservation prennent habituellement comme référence (comme ligne du tableau) : 
 
-- Des pays, pour voir comment la présence d'aires protégées à l'échelle nationale influence la distribution d'autres variables également à l'échelle nationale,  cf. []
-- Des unités administratives, comme des communes, cf. []
-- Des zones géographiques d'une échelle assez fine (par exemple, 1 km2), cf. par exemple Wolf et al. []
-- Des pixels à l'échelle la plus fine où ils sont disponible, généralement en effectuant un tirage alétaoire, cf. par exemple Devenish et al. []
+- Des pays, pour voir comment la présence d'aires protégées à l'échelle nationale influence la distribution d'autres variables également à l'échelle nationale
+- Des unités administratives, comme des communes
+- Des zones géographiques d'une échelle assez fine (par exemple, 1 km2), cf. par exemple Wolf et al. [@wolf_forest_2021]
+- Des pixels à l'échelle la plus fine où ils sont disponible, généralement en effectuant un tirage alétaoire, cf. par exemple Devenish et al. [-@devenish_track_2022]
 
 Une approche courante consiste à diviser le territoires en mailles, carrées ou en forme d'alvéoles d'abeilles (hexagones), et à calculer des indicateurs pour chacune de ces mailles.
 

@@ -53,7 +53,7 @@ AP_RCT <- AP_Vahatra %>%
   mutate(Groupe = ifelse(year(date_creation) < 2015, "Traitement", "Contrôle"),
          `Couvert forestier en 2000` = `treecover_area_2000-01-01_treecover_ha`,
          `Surface (ha)` = as.numeric(st_area(AP_Vahatra)) / 10000,
-         `Couvert forestier en 2000 (%)` = `Couvert forestier en 2000` / `Surface (ha)`)
+         `Couvert forestier en 2000 (%)` = (`Couvert forestier en 2000` / `Surface (ha)`)*100)
 
 # On fait une série de tests de comparaison de moyenne
 t_tests <- AP_RCT %>%
@@ -97,8 +97,9 @@ On va maintenant s'intéresser aux différences de déforestation observées "ap
 
 AP_RCT <- AP_RCT %>%
   mutate(taux_deforestation_2000_2014 = 
-           -((`treecover_area_2014-01-01_treecover_ha` / 
-              `treecover_area_2000-01-01_treecover_ha`)^(1/14) - 1) * 100)
+           -((`treecover_area_2014-01-01_treecover_ha` - 
+              `treecover_area_2000-01-01_treecover_ha`) /
+           `treecover_area_2000-01-01_treecover_ha`)* 100)
 
 # Comparer les taux de déforestation moyens entre les groupes
 comparaison_deforestation <- AP_RCT %>%

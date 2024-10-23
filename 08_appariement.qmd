@@ -212,9 +212,6 @@ library(tmap)
 library(htmltools) # Pour avoir de plus jolies tables
 library(geodata) # Pour les frontières de Madagascar
 
-# Taille des titres des cartes
-taille_titres_cartes = 1
-
 grille_mada_summary_AP <- read_rds("data/grille_mada_summary_AP.rds")
 
 # On référence le nom des variables qui vont servir à l'analyse
@@ -278,14 +275,18 @@ print(m_out)
 # print(summary(m_out, un = FALSE))
 bal_table <- bal.tab(m_out, un = TRUE)
 print(bal_table)
-m_data <- match.data(m_out) %>%
+grille_matched <- match.data(m_out) %>%
   st_sf()
+
+if (!file.exists("data/grille_matched.rds")) {
+  write_rds(grille_matched, "data/grille_matched.rds")
+}
 
 contour_mada <- gadm("Madagascar", level = 0, path = "data") %>% st_as_sf()
 # On visualise les données appareillées
 tm_shape(contour_mada) +
   tm_borders() +
-  tm_shape(m_data) +
+  tm_shape(grille_matched) +
   tm_fill(col = "traitement", palette = "Set1", title = "Groupes d'appariement",
           labels = c("Contrôle", "Traitement")) +
   tm_layout(legend.outside = TRUE,
